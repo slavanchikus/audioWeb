@@ -69,6 +69,7 @@ export default () => ({
     }),
   ],
   devServer: {
+    https: true,
     port: 8081,
     historyApiFallback: true,
     headers: {

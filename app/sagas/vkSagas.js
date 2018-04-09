@@ -25,6 +25,7 @@ export function* fetchUser({ inputValue }) {
 
 export function* watchVkRequest() {
   yield takeEvery('USER_REQUEST', fetchUser);
+  yield takeEvery('TOKEN_REQUEST', fetchAccessToken);
 }
 
 export function* vkSagas() {
