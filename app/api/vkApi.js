@@ -1,12 +1,13 @@
-export const getAudio = () => fetch('https://api.vk.com/method/audio.get?access_token=9927d106a14db7e460a57ab29bad70ce2deea4f7da2e470d7273c7096a199dc53e038fb73b366ff8e3753&owner_id=9387646&v=5.71', {
+const host = 'http://localhost:8000';
+/* http://localhost:8000 */
+
+export const getAudio = userId => fetch(`${host}/getuseraudio`, {
   method: 'POST',
   headers: {
-    'Content-Type': 'application/json',
-    'user-agent': 'KateMobileAndroid/48.2 lite-433 (Android 7.0; SDK 24; arm64-v8a; samsung SM-G930F; ru)'
+    'Content-Type': 'application/json'
   },
-})
-  .then(response => response.json())
+  body: JSON.stringify({ userId }),
+}).then(response => response.json())
   .catch((error) => {
     throw error;
   });
-

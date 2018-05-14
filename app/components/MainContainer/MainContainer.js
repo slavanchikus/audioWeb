@@ -3,31 +3,32 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { audioSelector, userSelector, uiStateSelector } from '../../selector/mainSelector';
+import { audioSelector, uiStateSelector } from '../../selector/mainSelector';
 
-import { getAudio } from '../../api/vkApi';
+import { getUserAudio } from '../../actions/actions';
 
 import styles from './MainContainer.module.styl';
 
 const mapStateToProps = state => ({
-  user: userSelector(state),
   audio: audioSelector(state),
   uiState: uiStateSelector(state)
 });
 
 const mapDispatchToProps = dispatch =>
-    bindActionCreators({ }, dispatch);
+    bindActionCreators({ getUserAudio }, dispatch);
 
 class MainContainer extends Component {
   componentDidMount() {
-    getAudio();
+    this.props.getUserAudio('9387646');
   }
 
 
   render() {
+    const { audio } = this.props;
     return (
       <div className={styles.container}>
-        Привет!
+        {audio.map(item =>
+          <audio key={item.id} src={item.url} controls />)}
       </div>
     );
   }
