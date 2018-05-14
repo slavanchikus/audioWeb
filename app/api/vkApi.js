@@ -1,8 +1,12 @@
-import fetchJsonp from 'fetch-jsonp';
-
-export const getUser = userId => fetchJsonp(`https://api.vk.com/method/users.get?user_ids=${userId}&fields=bdate&v=5.67`)
-    .then(response => response.json())
-    .catch((error) => {
-      throw error;
-    });
+export const getAudio = () => fetch('https://api.vk.com/method/audio.get?access_token=9927d106a14db7e460a57ab29bad70ce2deea4f7da2e470d7273c7096a199dc53e038fb73b366ff8e3753&owner_id=9387646&v=5.71', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'user-agent': 'KateMobileAndroid/48.2 lite-433 (Android 7.0; SDK 24; arm64-v8a; samsung SM-G930F; ru)'
+  },
+})
+  .then(response => response.json())
+  .catch((error) => {
+    throw error;
+  });
 

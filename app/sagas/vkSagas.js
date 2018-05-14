@@ -1,31 +1,18 @@
 import { fork, call, put, takeEvery } from 'redux-saga/effects';
-import { getUser } from '../api/vkApi';
+import { getAudio } from '../api/vkApi';
 
-/* client id = 6285810 */
-
-export function* fetchAccessToken() {
+export function* fetchAudio({ userId }) {
   try {
-    window.location.replace(`https://oauth.vk.com/authorize?client_id=6285810&display=popup&redirect_uri=${window.location.href}&scope=friends&response_type=token&v=5.69`);
+    const payload = yield call(getAudio, userId);
+    yield put({ type: 'GET_AUDIO_COMPLETE', payload });
   } catch (error) {
-    yield put({ type: 'TOKEN_REQUEST_ERROR' });
-    throw error;
-  }
-}
-
-export function* fetchUser({ inputValue }) {
-  try {
-    const userPayload = yield call(getUser, inputValue);
-    const payload = { ...userPayload, inputValue };
-    yield put({ type: 'USER_REQUEST_COMPLETE', payload });
-  } catch (error) {
-    yield put({ type: 'USER_REQUEST_ERROR' });
+    yield put({ type: 'GET_AUDIO_FAILED' });
     throw error;
   }
 }
 
 export function* watchVkRequest() {
-  yield takeEvery('USER_REQUEST', fetchUser);
-  yield takeEvery('TOKEN_REQUEST', fetchAccessToken);
+  yield takeEvery('GET_AUDIO', fetchAudio);
 }
 
 export function* vkSagas() {
