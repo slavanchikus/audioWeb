@@ -1,0 +1,25 @@
+.container
+  display: flex
+  flex-direction: row
+  padding: 12px 0
+  margin-top: -1px
+  box-sizing: border-box
+  border-bottom: 2px solid white
+  cursor: pointer
+  transition: all 0.1s ease
+  &:hover
+    border-color: #ffa95e
+  >div
+    flex-shrink: 0
+    white-space: nowrap
+    text-overflow: ellipsis
+    overflow: hidden
+    &:nth-child(1)
+      width: 6%
+    &:nth-child(2)
+      width: 32%
+    &:nth-child(3)
+      width: 50%
+    &:nth-child(4)
+      width: 12%
+      text-align: right

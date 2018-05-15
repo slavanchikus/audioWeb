@@ -1,36 +1,20 @@
 import React, { Component } from 'react';
 
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import AudioList from '../Audio/List/List';
+import AudioPlayer from '../Audio/Player/Player';
+import Search from '../Search/Search';
 
-import { audioSelector, uiStateSelector } from '../../selector/mainSelector';
-import { getUserAudio } from '../../actions/actions';
+import styles from './MainContainer.module.styl';
 
-import AllAudio from '../AllAudio/AllAudio';
-
-const mapStateToProps = state => ({
-  audio: audioSelector(state),
-  uiState: uiStateSelector(state)
-});
-
-const mapDispatchToProps = dispatch =>
-    bindActionCreators({ getUserAudio }, dispatch);
-
-class MainContainer extends Component {
-  componentDidMount() {
-    this.props.getUserAudio('9387646');
-  }
-
-
+export default class MainContainer extends Component {
   render() {
-    const { audio } = this.props;
     return (
-      <div>
-        <AllAudio audio={audio} />
+      <div className={styles.container}>
+        <Search />
+        <AudioList />
+        <AudioPlayer />
       </div>
     );
   }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(MainContainer);
 
