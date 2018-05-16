@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux';
 
-import player from './playerReducer';
-import audios from './audiosReducer';
+import audio from './audioReducer';
+import queue from './queueReducer';
+import list from './listReducer';
 import uiState from './uiStateReducer';
 
 const rootReducer = combineReducers({
-  player,
-  audios,
+  audio,
+  queue,
+  list,
   uiState
 });
 

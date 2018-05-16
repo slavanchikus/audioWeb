@@ -1,20 +1,48 @@
 import React, { Component } from 'react';
 
-import AudioList from '../Audio/List/List';
-import AudioPlayer from '../Audio/Player/Player';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import { audioSelector, queueSelector, listSelector, uiStateSelector } from '../../selector/mainSelector';
+import { getUserAudio, pickAudio, togglePlaying } from '../../actions/actions';
+
+import AudioList from '../AudioList/List';
+import AudioPlayer from '../AuidoPlayer/Player';
 import Search from '../Search/Search';
 
 import styles from './MainContainer.module.styl';
 
-export default class MainContainer extends Component {
+const mapStateToProps = state => ({
+  audio: audioSelector(state),
+  queue: queueSelector(state),
+  list: listSelector(state),
+  uiState: uiStateSelector(state)
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ getUserAudio, pickAudio, togglePlaying }, dispatch);
+
+class MainContainer extends Component {
   render() {
+    const { audio, queue, list, uiState } = this.props;
     return (
       <div className={styles.container}>
         <Search />
-        <AudioList />
-        <AudioPlayer />
+        <AudioList
+          audio={audio}
+          list={list}
+          getUserAudio={this.props.getUserAudio}
+          pickAudio={this.props.pickAudio}
+        />
+        {audio.id &&
+        <AudioPlayer
+          audio={audio}
+          queue={queue}
+          togglePlaying={this.props.togglePlaying}
+        />}
       </div>
     );
   }
 }
 
+export default connect(mapStateToProps, mapDispatchToProps)(MainContainer);
