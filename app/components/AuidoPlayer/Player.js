@@ -42,6 +42,10 @@ export default class Player extends Component {
     this.audio.currentTime = newTime;
   };
 
+  handleVolume = (val) => {
+    this.audio.volume = val;
+  };
+
   render() {
     const { playedTime } = this.state;
     const { queue, audio } = this.props;
@@ -62,7 +66,10 @@ export default class Player extends Component {
           <div>{track.title}</div>
         </div>
         <QueueManage />
-        <Volume />
+        <Volume
+          volume={this.audio && this.audio.volume}
+          onPickVolume={this.handleVolume}
+        />
         <audio
           ref={node => (this.audio = node)}
           src={track.url}

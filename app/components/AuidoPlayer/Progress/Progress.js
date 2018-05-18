@@ -30,7 +30,6 @@ export default class Progress extends Component {
         onClick={this.handleClick}
       >
         <div
-          ref={node => (this.progress = node)}
           className={styles.progress}
           style={{ width: `${100 * (playedTime / duration)}%` }}
         />
