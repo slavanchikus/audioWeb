@@ -16,12 +16,15 @@ export default class Player extends Component {
   };
 
   state = {
-    playedTime: 0
+    duration: 0,
+    currentTime: 0,
+    volume: 1
   };
 
   componentDidMount() {
     this.audio.play();
     this.audio.addEventListener('timeupdate', this.handleTimeUpdate, false);
+    this.audio.addEventListener('loadeddata', this.handleAudioLoad, false);
   }
 
   componentWillReceiveProps({ audio }) {
@@ -34,8 +37,12 @@ export default class Player extends Component {
     }
   }
 
+  handleAudioLoad = () => {
+    this.setState({ duration: this.audio.duration });
+  };
+
   handleTimeUpdate = () => {
-    this.setState({ playedTime: this.audio.currentTime });
+    this.setState({ currentTime: this.audio.currentTime });
   };
 
   handleMoveTime = (newTime) => {
@@ -43,18 +50,24 @@ export default class Player extends Component {
   };
 
   handleVolume = (val) => {
+    this.setState({ volume: val });
     this.audio.volume = val;
   };
 
   render() {
-    const { playedTime } = this.state;
+    const { duration, currentTime, volume } = this.state;
     const { queue, audio } = this.props;
     const track = queue.find(item => item.id === audio.id);
     return (
       <div className={styles.container}>
+        <audio
+          ref={node => (this.audio = node)}
+          src={track.url}
+          autoPlay={audio.isPlaying}
+        />
         <Progress
-          duration={this.audio && this.audio.duration}
-          playedTime={playedTime}
+          duration={duration}
+          currentTime={currentTime}
           onMoveTime={this.handleMoveTime}
         />
         <Controls
@@ -67,13 +80,8 @@ export default class Player extends Component {
         </div>
         <QueueManage />
         <Volume
-          volume={this.audio && this.audio.volume}
+          volume={volume}
           onPickVolume={this.handleVolume}
-        />
-        <audio
-          ref={node => (this.audio = node)}
-          src={track.url}
-          autoPlay={audio.isPlaying}
         />
       </div>
     );

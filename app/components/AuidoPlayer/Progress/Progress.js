@@ -6,13 +6,8 @@ import styles from './Progress.module.styl';
 export default class Progress extends Component {
   static propTypes = {
     duration: PropTypes.number.isRequired,
-    playedTime: PropTypes.number.isRequired,
+    currentTime: PropTypes.number.isRequired,
     onMoveTime: PropTypes.func.isRequired
-  };
-
-  static defaultProps = {
-    duration: 0,
-    playedTime: 0
   };
 
   handleClick= (e) => {
@@ -21,17 +16,29 @@ export default class Progress extends Component {
     );
   };
 
+  handleTransformTime = (time) => {
+    const min = Math.floor(time / 60);
+    const sec = `0${time - (min * 60)}`;
+    return `${min}:${sec.substr(-2)}`;
+  };
+
   render() {
-    const { duration, playedTime } = this.props;
+    const { duration, currentTime } = this.props;
     return (
       <div
         ref={node => (this.timeline = node)}
         className={styles.container}
         onClick={this.handleClick}
       >
+        <div className={styles.played}>
+          {this.handleTransformTime(Math.round(currentTime))}
+        </div>
+        <div className={styles.duration}>
+          {this.handleTransformTime(Math.round(duration))}
+        </div>
         <div
           className={styles.progress}
-          style={{ width: `${100 * (playedTime / duration)}%` }}
+          style={{ width: `${100 * (currentTime / duration)}%` }}
         />
       </div>
     );
