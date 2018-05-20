@@ -34,11 +34,12 @@ class MainContainer extends Component {
           getUserAudio={this.props.getUserAudio}
           pickAudio={this.props.pickAudio}
         />
-        {audio.id &&
+        {audio.id && queue.length > 0 &&
         <AudioPlayer
           audio={audio}
           queue={queue}
           togglePlaying={this.props.togglePlaying}
+          pickAudio={this.props.pickAudio}
         />}
       </div>
     );

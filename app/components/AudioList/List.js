@@ -18,7 +18,7 @@ export default class List extends Component {
   }
 
   handlePickAudio = (id) => {
-    this.props.pickAudio(this.props.list, id);
+    this.props.pickAudio(id, this.props.list);
   };
 
   render() {

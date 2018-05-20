@@ -7,11 +7,11 @@ export default class Progress extends Component {
   static propTypes = {
     duration: PropTypes.number.isRequired,
     currentTime: PropTypes.number.isRequired,
-    onMoveTime: PropTypes.func.isRequired
+    onRewindTime: PropTypes.func.isRequired
   };
 
   handleClick= (e) => {
-    this.props.onMoveTime(
+    this.props.onRewindTime(
       ((e.clientX - this.timeline.getBoundingClientRect().left) / this.timeline.getBoundingClientRect().width) * this.props.duration
     );
   };

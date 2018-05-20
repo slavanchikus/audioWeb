@@ -3,13 +3,9 @@ export const getUserAudio = userId => ({
   userId,
 });
 
-export const pickAudio = (queue, id) => ({
+export const pickAudio = (id, queue) => ({
   type: 'PICK_AUDIO',
-  payload: { queue, id }
-});
-
-export const moveAudio = () => ({
-  type: 'MOVE_AUDIO',
+  payload: { id, queue }
 });
 
 export const togglePlaying = () => ({
