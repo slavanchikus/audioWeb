@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { audioSelector, queueSelector, listSelector, uiStateSelector } from '../../selector/mainSelector';
-import { getUserAudio, pickAudio, togglePlaying } from '../../actions/actions';
+import { getUserAudio, searchAudio, pickAudio, togglePlaying } from '../../actions/actions';
 
 import AudioList from '../AudioList/List';
 import AudioPlayer from '../AuidoPlayer/Player';
@@ -20,14 +20,16 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ getUserAudio, pickAudio, togglePlaying }, dispatch);
+  bindActionCreators({ getUserAudio, searchAudio, pickAudio, togglePlaying }, dispatch);
 
 class MainContainer extends Component {
   render() {
     const { audio, queue, list, uiState } = this.props;
     return (
       <div className={styles.container}>
-        <Search />
+        <Search
+          onSearchAudio={this.props.searchAudio}
+        />
         <AudioList
           audio={audio}
           list={list}

@@ -34,7 +34,7 @@ export default class List extends Component {
         <div className={styles.content}>
           {list.map((item, i) =>
             <AudioContainer
-              key={item.id}
+              key={`${item.id}++${i}`}
               index={i}
               item={item}
               active={audio}
