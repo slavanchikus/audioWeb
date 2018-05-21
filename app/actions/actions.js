@@ -16,11 +16,6 @@ export const pickAudio = (id, queue) => ({
   queue
 });
 
-export const changeSearchType = value => ({
-  type: 'CHANGE_SEARCH_TYPE',
-  value
-});
-
 export const togglePlaying = () => ({
   type: 'TOGGLE_PLAYING',
 });

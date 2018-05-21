@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { searchIcon, userIcon, audioIcon } from '../../uikit/svgIcons';
+import { searchIcon, audioIcon } from '../../uikit/svgIcons';
 
 import styles from './Search.module.styl';
 
 export default class Search extends Component {
   static propTypes = {
     userId: PropTypes.string.isRequired,
-    searchType: PropTypes.string.isRequired,
     getAudio: PropTypes.func.isRequired,
-    changeSearchType: PropTypes.func.isRequired
   };
 
   state = {
@@ -29,17 +27,8 @@ export default class Search extends Component {
   };
 
   handleSearchClick = () => {
-    const { searchType, getAudio } = this.props;
-    getAudio(searchType, this.state.value, 150, 0);
-  };
-
-  handleTypeClick = () => {
-    /* const { searchType } = this.props;
-    if (searchType === 'user') {
-      this.props.changeSearchType('audio');
-    } else {
-      this.props.changeSearchType('user');
-    } */
+    const { getAudio } = this.props;
+    getAudio('audio', this.state.value, 150, 0);
   };
 
   handleKeyUp = (e) => {
@@ -50,19 +39,15 @@ export default class Search extends Component {
 
   render() {
     const { value } = this.state;
-    const { searchType } = this.props;
     return (
       <div className={styles.container}>
-        <div className={styles.search_type} onClick={this.handleTypeClick}>
-          {searchType === 'user' ?
-            userIcon()
-            :
-            audioIcon()}
+        <div className={styles.search_type}>
+          {audioIcon()}
         </div>
         <input
           type="text"
           value={value}
-          placeholder={searchType === 'user' ? 'Вставьте ссылку профиля' : 'Поиск по аудиозаписям'}
+          placeholder="Поиск по аудиозаписям"
           onChange={this.handleChange}
           onKeyUp={this.handleKeyUp}
         />

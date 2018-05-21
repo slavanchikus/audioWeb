@@ -1,6 +1,5 @@
 const initialState = {
   items: [],
-  searchType: 'audio',
   scrollType: 'user'
 };
 
@@ -30,13 +29,6 @@ export default function audiosReducer(state = initialState, action) {
           ...state.items,
           ...response.items
         ]
-      };
-    }
-    case 'CHANGE_SEARCH_TYPE': {
-      const { value } = action;
-      return {
-        ...state,
-        searchType: value
       };
     }
     default:

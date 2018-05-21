@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { infoSelector, audioSelector, queueSelector, listSelector, uiStateSelector } from '../../selector/mainSelector';
-import { getUser, getAudio, pickAudio, togglePlaying, changeSearchType } from '../../actions/actions';
+import { getUser, getAudio, pickAudio, togglePlaying } from '../../actions/actions';
 
 import AudioList from '../AudioList/List';
 import AudioPlayer from '../AuidoPlayer/Player';
@@ -21,7 +21,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ getUser, getAudio, pickAudio, togglePlaying, changeSearchType }, dispatch);
+  bindActionCreators({ getUser, getAudio, pickAudio, togglePlaying }, dispatch);
 
 class MainContainer extends Component {
   componentDidMount() {
@@ -31,9 +31,9 @@ class MainContainer extends Component {
   componentWillReceiveProps({ info }) {
     if (info !== this.props.info) {
       if (info.user) {
-        this.props.getAudio(this.props.list.scrollType, info.user.id, 150, 0);
+        this.props.getAudio('user', info.user.id, 150, 0);
       } else {
-        this.props.getAudio(this.props.list.scrollType, '9387646', 150, 0);
+        this.props.getAudio('user', '9387646', 150, 0);
       }
     }
   }
@@ -44,9 +44,7 @@ class MainContainer extends Component {
       <div className={styles.container}>
         <Search
           userId={info.user ? info.user.id : '9387646'}
-          searchType={list.searchType}
           getAudio={this.props.getAudio}
-          changeSearchType={this.props.changeSearchType}
         />
         <AudioList
           audio={audio}
