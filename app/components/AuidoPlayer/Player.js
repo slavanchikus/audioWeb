@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import Progress from './Progress/Progress';
@@ -8,7 +8,7 @@ import Volume from './Volume/Volume';
 
 import styles from './Player.module.styl';
 
-export default class Player extends Component {
+export default class Player extends PureComponent {
   static propTypes = {
     audio: PropTypes.object.isRequired,
     queue: PropTypes.array.isRequired,

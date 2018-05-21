@@ -4,12 +4,12 @@ const initialState = {
 
 export default function uiStateReducer(state = initialState, action) {
   switch (action.type) {
-    case 'USER_REQUEST': {
+    case 'GET_AUDIO': {
       return {
         isFetching: true
       };
     }
-    case 'USER_REQUEST_COMPLETE': {
+    case 'GET_AUDIO_COMPLETE': {
       return {
         isFetching: false
       };
