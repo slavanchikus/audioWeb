@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import cx from 'classnames';
+
 import AudioContainer from './AudioContainer/AudioContainer';
 
 import styles from './List.module.styl';
@@ -26,9 +28,12 @@ export default class List extends Component {
   };
 
   render() {
-    const { audio, list } = this.props;
+    const { audio, list, isFetching } = this.props;
+    const containerClassName = cx(styles.container, {
+      [styles.fetching]: isFetching
+    });
     return (
-      <div className={styles.container} onScroll={this.handleScroll} ref={node => (this.list = node)}>
+      <div className={containerClassName} onScroll={this.handleScroll} ref={node => (this.list = node)}>
         <div className={styles.header}>
           <div>№</div>
           <div>Артист</div>
@@ -47,6 +52,9 @@ export default class List extends Component {
             />)}
           {list.count < 1 &&
           <div className={styles.empty}>Не найдено ни одной аудиозаписи</div>}
+        </div>
+        <div className={styles.loader_wrapper}>
+          <div className={styles.loader} />
         </div>
       </div>
     );

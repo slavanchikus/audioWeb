@@ -13,28 +13,34 @@ export default class Search extends Component {
 
   state = {
     value: '',
+    isTyping: false,
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.value.length > 0 && this.state.value.length === 0) {
+    if (prevState.isTyping && !this.state.isTyping) {
       const { userId, getAudio } = this.props;
-      getAudio('user', userId, 150, 0);
+      if (this.state.value.length === 0) {
+        getAudio('user', userId, 150, 0);
+      } else {
+        getAudio('audio', this.state.value, 150, 0);
+      }
     }
   }
 
   handleChange = (e) => {
+    if (!this.state.isTyping) {
+      this.setState({ isTyping: true });
+    }
+    if (this.typingDelay !== undefined) {
+      clearTimeout(this.typingDelay);
+    }
+    this.typingDelay = setTimeout(() => this.setState({ isTyping: false }), 500);
     this.setState({ value: e.target.value });
   };
 
   handleSearchClick = () => {
     const { getAudio } = this.props;
     getAudio('audio', this.state.value, 150, 0);
-  };
-
-  handleKeyUp = (e) => {
-    if (e.keyCode === 13) {
-      this.handleSearchClick();
-    }
   };
 
   render() {
@@ -49,7 +55,6 @@ export default class Search extends Component {
           value={value}
           placeholder="Поиск по аудиозаписям"
           onChange={this.handleChange}
-          onKeyUp={this.handleKeyUp}
         />
         <div className={styles.search} onClick={this.handleSearchClick}>
           {searchIcon()}
