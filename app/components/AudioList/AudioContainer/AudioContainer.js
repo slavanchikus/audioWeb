@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import cx from 'classnames';
 
-import { playIcon, pauseIcon } from '../../../uikit/svgIcons';
+import { playIcon } from '../../../uikit/svgIcons';
 
 import styles from './AudioContainer.module.styl';
 
@@ -25,7 +25,6 @@ export default class AudioContainer extends Component {
     const min = Math.floor(item.duration / 60);
     const sec = `0${item.duration - (min * 60)}`;
     const className = cx(styles.container, {
-      [styles.active]: active.id === item.id,
       [styles.disable]: item.content_restricted
     });
     return (
@@ -33,9 +32,12 @@ export default class AudioContainer extends Component {
         {active.id === item.id ?
           <div>
             {active.isPlaying ?
-              playIcon(18, 18)
+              <div className={styles.animation}>
+                <span />
+                <span />
+              </div>
               :
-              pauseIcon(18, 18)
+              playIcon(18, 18)
             }
           </div>
           :

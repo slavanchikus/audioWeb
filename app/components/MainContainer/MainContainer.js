@@ -33,7 +33,7 @@ class MainContainer extends Component {
       if (info.user) {
         this.props.getAudio('user', info.user.id, 150, 0);
       } else {
-        this.props.getAudio('user', '9387646', 150, 0);
+        this.props.getAudio('audio', 'rhcp', 150, 0);
       }
     }
   }

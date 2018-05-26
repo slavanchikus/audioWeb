@@ -17,7 +17,8 @@ export default function audiosReducer(state = initialState, action) {
       }
       return {
         ...state,
-        value
+        value,
+        scrollType: kind,
       };
     }
     case 'GET_AUDIO_COMPLETE': {
