@@ -25,7 +25,8 @@ export default class AudioContainer extends Component {
     const min = Math.floor(item.duration / 60);
     const sec = `0${item.duration - (min * 60)}`;
     const className = cx(styles.container, {
-      [styles.disable]: item.content_restricted
+      [styles.disable]: item.content_restricted,
+      [styles.playing]: active.id === item.id,
     });
     return (
       <div className={className} onClick={this.handleClick}>
