@@ -25,10 +25,10 @@ export default class QueueManage extends Component {
 
   render() {
     const { loop, random } = this.props;
-    const repeatClassName = cx({
+    const repeatClassName = cx(styles.item, {
       [styles.loop]: loop,
     });
-    const randomClassName = cx({
+    const randomClassName = cx(styles.item, {
       [styles.loop]: random,
     });
     return (
