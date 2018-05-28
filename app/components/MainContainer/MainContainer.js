@@ -25,10 +25,11 @@ const mapDispatchToProps = dispatch =>
 
 class MainContainer extends Component {
   componentDidMount() {
-    this.props.getUser();
+    /* this.props.getUser(); */
+    this.props.getAudio('audio', 'rhcp', 150, 0);
   }
 
-  componentWillReceiveProps({ info }) {
+  /* componentWillReceiveProps({ info }) {
     if (info !== this.props.info) {
       if (info.user) {
         this.props.getAudio('user', info.user.id, 150, 0);
@@ -36,14 +37,14 @@ class MainContainer extends Component {
         this.props.getAudio('audio', 'rhcp', 150, 0);
       }
     }
-  }
+  } */
 
   render() {
     const { info, audio, queue, list, uiState } = this.props;
     return (
       <div className={styles.container}>
         <Search
-          userId={info.user ? info.user.id : '9387646'}
+          userId={info.user && info.user.id}
           getAudio={this.props.getAudio}
         />
         <AudioList
