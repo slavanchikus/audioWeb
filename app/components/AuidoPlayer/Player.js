@@ -103,6 +103,7 @@ export default class Player extends PureComponent {
           src={track.url}
           autoPlay={audio.isPlaying}
           loop={loop}
+          crossOrigin="anonymous"
         />
         <Progress
           duration={duration}
