@@ -95,14 +95,15 @@ export default class Player extends PureComponent {
   render() {
     const { playerQueue, duration, currentTime, volume, loop, random } = this.state;
     const { audio } = this.props;
-    const track = playerQueue.find(item => item.id === audio.id);
+    const track = playerQueue.find(item => item.source_id === audio.id);
     return (
       <div className={styles.container}>
         <audio
           ref={node => (this.audio = node)}
-          src={track.url}
+          src={track.stream}
           autoPlay={audio.isPlaying}
           loop={loop}
+          preload="metadata"
           crossOrigin="anonymous"
         />
         <Progress

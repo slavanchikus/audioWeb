@@ -1,7 +1,5 @@
 import { createSelector } from 'reselect';
 
-export const infoSelector = state => state.info;
-
 export const audioSelector = state => state.audio;
 
 const queueStateSelector = state => state.queue;

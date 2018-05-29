@@ -1,13 +1,7 @@
-export const getUser = () => ({
-  type: 'GET_USER',
-});
-
-export const getAudio = (kind, value, count, offset) => ({
+export const getAudio = (value, page) => ({
   type: 'GET_AUDIO',
-  kind,
   value,
-  count,
-  offset,
+  page,
 });
 
 export const pickAudio = (id, queue) => ({

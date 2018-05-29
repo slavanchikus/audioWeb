@@ -7,7 +7,6 @@ import styles from './Search.module.styl';
 
 export default class Search extends Component {
   static propTypes = {
-    userId: PropTypes.string.isRequired,
     getAudio: PropTypes.func.isRequired,
   };
 
@@ -18,12 +17,11 @@ export default class Search extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.isTyping && !this.state.isTyping) {
-      const { userId, getAudio } = this.props;
+      const { getAudio } = this.props;
       if (this.state.value.length === 0) {
-        /* getAudio('user', userId, 150, 0); */
-        getAudio('audio', 'rhcp', 150, 0);
+        getAudio('rhcp', 0);
       } else {
-        getAudio('audio', this.state.value, 150, 0);
+        getAudio(this.state.value, 0);
       }
     }
   }
@@ -41,7 +39,7 @@ export default class Search extends Component {
 
   handleSearchClick = () => {
     const { getAudio } = this.props;
-    getAudio('audio', this.state.value, 150, 0);
+    getAudio(this.state.value, 0);
   };
 
   render() {

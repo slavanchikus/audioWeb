@@ -1,23 +1,9 @@
 import { fork, call, put, takeEvery } from 'redux-saga/effects';
-import { getUser, getAudio } from '../api/vkApi';
+import { getAudio } from '../api/vkApi';
 
-export function* fetchUser() {
+export function* fetchAudio({ value, page }) {
   try {
-    const payload = yield call(getUser);
-    yield put({ type: 'GET_USER_COMPLETE', payload });
-  } catch (error) {
-    yield put({ type: 'GET_USER_FAILED' });
-    throw error;
-  }
-}
-
-export function* watchUserRequest() {
-  yield takeEvery('GET_USER', fetchUser);
-}
-
-export function* fetchAudio({ kind, value, count, offset }) {
-  try {
-    const payload = yield call(getAudio, kind, value, count, offset);
+    const payload = yield call(getAudio, value, page);
     yield put({ type: 'GET_AUDIO_COMPLETE', payload });
   } catch (error) {
     yield put({ type: 'GET_AUDIO_FAILED' });
@@ -31,5 +17,4 @@ export function* watchAudioRequest() {
 
 export function* vkSagas() {
   yield fork(watchAudioRequest);
-  yield fork(watchUserRequest);
 }

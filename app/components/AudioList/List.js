@@ -18,8 +18,8 @@ export default class List extends Component {
 
   handleScroll = () => {
     const { list, getAudio, isFetching } = this.props;
-    if (!isFetching && this.list.scrollHeight - this.list.scrollTop === this.list.clientHeight && list.count !== list.items.length) {
-      getAudio(list.scrollType, list.value, 150, list.items.length);
+    if (!isFetching && this.list.scrollHeight - this.list.scrollTop === this.list.clientHeight) {
+      getAudio(list.value, 0);
     }
   };
 
@@ -41,16 +41,16 @@ export default class List extends Component {
           <div>Время</div>
         </div>
         <div className={styles.content}>
-          {list.count > 0 &&
+          {list.items.length > 0 &&
           list.items.map((item, i) =>
             <AudioContainer
-              key={`${item.id}++${i}`}
+              key={`${item.source_id}++${i}`}
               index={i}
               item={item}
               active={audio}
               onPickAudio={this.handlePickAudio}
             />)}
-          {list.count < 1 &&
+          {list.items.length < 1 &&
           <div className={styles.empty}>Не найдено ни одной аудиозаписи</div>}
         </div>
         <div className={styles.loader_wrapper}>

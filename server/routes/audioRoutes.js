@@ -1,23 +1,14 @@
 const request = require('request');
 
-const to = '9ffd46962071329085616502ff68c9a4b3ccfc22a3f995ad776a1d2a9dcecadd7f44150a9e8c9e708f730';
-
 module.exports = function(app) {
   app.post('/getaudio', (mainReq, mainRes) => {
-    const { kind, value, count, offset } = mainReq.body;
-    const audioGet = `https://api.vk.com/method/audio.get?access_token=${to}&owner_id=${value}&count=${count}&offset=${offset}&v=5.71`;
-    const audioSearch = `https://api.vk.com/method/audio.search?access_token=${to}&q=${value}&count=${count}&offset=${offset}&v=5.71`;
-    let url;
-    if (kind === 'user') {
-      url = audioGet;
-    } else {
-      url = audioSearch;
-    }
+    const { value, page } = mainReq.body;
+    const url = `http://api-2.datmusic.xyz/search?q=${value}&page=${page}`;
     const params = {
       url,
       method: 'GET',
       headers: {
-        'user-agent': 'KateMobileAndroid/48.2 lite-433 (Android 7.0; SDK 24; arm64-v8a; samsung SM-G930F; ru)'
+        'user-agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36'
       }
     };
     request(params, (err, res, body) => {
@@ -25,6 +16,20 @@ module.exports = function(app) {
         const response = JSON.parse(body);
         mainRes.send({ ...response });
       }
+    });
+  });
+
+  app.get('/test', (mainReq, mainRes) => {
+    const url = 'https://api-2.datmusic.xyz/stream/6a214984/1825f556';
+    const params = {
+      url,
+      method: 'GET',
+      headers: {
+        'user-agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36'
+      }
+    };
+    request(params, (err, res, body) => {
+      console.log(res);
     });
   });
 };
