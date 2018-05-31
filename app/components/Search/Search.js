@@ -11,7 +11,7 @@ export default class Search extends Component {
   };
 
   state = {
-    value: '',
+    value: 'rhcp',
     isTyping: false,
   };
 
@@ -19,9 +19,9 @@ export default class Search extends Component {
     if (prevState.isTyping && !this.state.isTyping) {
       const { getAudio } = this.props;
       if (this.state.value.length === 0) {
-        getAudio('rhcp', 0);
+        getAudio('rhcp', 1);
       } else {
-        getAudio(this.state.value, 0);
+        getAudio(this.state.value, 1);
       }
     }
   }

@@ -12,14 +12,14 @@ export default class List extends Component {
     audio: PropTypes.object.isRequired,
     list: PropTypes.object.isRequired,
     isFetching: PropTypes.bool.isRequired,
-    getAudio: PropTypes.func.isRequired,
+    setPage: PropTypes.func.isRequired,
     pickAudio: PropTypes.func.isRequired
   };
 
   handleScroll = () => {
-    const { list, getAudio, isFetching } = this.props;
+    const { setPage, isFetching } = this.props;
     if (!isFetching && this.list.scrollHeight - this.list.scrollTop === this.list.clientHeight) {
-      getAudio(list.value, 0);
+      setPage();
     }
   };
 
@@ -44,13 +44,13 @@ export default class List extends Component {
           {list.items.length > 0 &&
           list.items.map((item, i) =>
             <AudioContainer
-              key={`${item.source_id}++${i}`}
+              key={`${item.id}++${i}`}
               index={i}
               item={item}
               active={audio}
               onPickAudio={this.handlePickAudio}
             />)}
-          {list.items.length < 1 &&
+          {!isFetching && list.items.length < 1 &&
           <div className={styles.empty}>Не найдено ни одной аудиозаписи</div>}
         </div>
         <div className={styles.loader_wrapper}>

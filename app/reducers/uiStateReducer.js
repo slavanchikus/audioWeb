@@ -1,5 +1,5 @@
 const initialState = {
-  isFetching: false
+  isFetching: true
 };
 
 export default function uiStateReducer(state = initialState, action) {

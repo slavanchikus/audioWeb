@@ -15,9 +15,14 @@ export default class AudioContainer extends Component {
     onPickAudio: PropTypes.func.isRequired
   };
 
+  shouldComponentUpdate(nextProps) {
+    return (nextProps.active.id === this.props.item.id)
+      || (this.props.active.id !== nextProps.active.id && this.props.active.id === this.props.item.id);
+  }
+
   handleClick = () => {
     const { item, onPickAudio } = this.props;
-    onPickAudio(item.source_id);
+    onPickAudio(item.id);
   };
 
   render() {
@@ -25,12 +30,11 @@ export default class AudioContainer extends Component {
     const min = Math.floor(item.duration / 60);
     const sec = `0${item.duration - (min * 60)}`;
     const className = cx(styles.container, {
-      [styles.playing]: active.source_id === item.source_id,
+      [styles.playing]: active.id === item.id,
     });
-    console.log('render');
     return (
       <div className={className} onClick={this.handleClick}>
-        {active.id === item.source_id ?
+        {active.id === item.id ?
           <div>
             {active.isPlaying ?
               <div className={styles.animation}>

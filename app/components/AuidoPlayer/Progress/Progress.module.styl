@@ -20,3 +20,31 @@
   position: absolute
   top: 9px
   right: 0
+
+.loading
+  width: 100%
+  overflow: hidden
+  &:before
+    display: block
+    position: absolute
+    content: ""
+    left: -200px
+    width: 200px
+    height: 100%
+    background-color: red
+    animation: loading 2s linear infinite
+
+@keyframes loading
+  from
+    left: -200px
+    width: 30%
+  50%
+    width: 30%
+  70%
+    width: 70%
+  80%
+    left: 50%
+  95%
+    left: 120%
+  to
+    left: 100%

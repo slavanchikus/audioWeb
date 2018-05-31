@@ -22,13 +22,15 @@ export default class Player extends PureComponent {
     currentTime: 0,
     volume: 1,
     loop: false,
-    random: false
+    random: false,
+    loaded: false
   };
 
   componentDidMount() {
     this.audio.play();
     this.audio.addEventListener('timeupdate', this.handleTimeUpdate, false);
-    this.audio.addEventListener('loadeddata', this.handleAudioLoad, false);
+    this.audio.addEventListener('loadstart', this.handleAudioLoading, false);
+    this.audio.addEventListener('loadeddata', this.handleAudioLoaded, false);
     this.audio.addEventListener('ended', this.handleAudioEnded, false);
   }
 
@@ -45,8 +47,12 @@ export default class Player extends PureComponent {
     }
   }
 
-  handleAudioLoad = () => {
-    this.setState({ duration: this.audio.duration });
+  handleAudioLoading = () => {
+    this.setState({ loaded: false });
+  };
+
+  handleAudioLoaded = () => {
+    this.setState({ duration: this.audio.duration, loaded: true });
   };
 
   handleAudioEnded = () => {
@@ -93,20 +99,19 @@ export default class Player extends PureComponent {
   };
 
   render() {
-    const { playerQueue, duration, currentTime, volume, loop, random } = this.state;
+    const { playerQueue, duration, currentTime, volume, loop, random, loaded } = this.state;
     const { audio } = this.props;
-    const track = playerQueue.find(item => item.source_id === audio.id);
+    const track = playerQueue.find(item => item.id === audio.id);
     return (
       <div className={styles.container}>
         <audio
           ref={node => (this.audio = node)}
-          src={track.stream}
+          src={track.url}
           autoPlay={audio.isPlaying}
           loop={loop}
-          preload="metadata"
-          crossOrigin="anonymous"
         />
         <Progress
+          loaded={loaded}
           duration={duration}
           currentTime={currentTime}
           onRewindTime={this.handleRewindTime}

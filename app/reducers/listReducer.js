@@ -1,9 +1,16 @@
 const initialState = {
   items: [],
+  page: 1
 };
 
 export default function audiosReducer(state = initialState, action) {
   switch (action.type) {
+    case 'SET_PAGE': {
+      return {
+        ...state,
+        page: state.page + 1,
+      };
+    }
     case 'GET_AUDIO': {
       const { value } = action;
       if (state.value && state.value !== value) {
@@ -11,6 +18,7 @@ export default function audiosReducer(state = initialState, action) {
           ...state,
           value,
           items: [],
+          page: 1
         };
       }
       return {
@@ -19,12 +27,12 @@ export default function audiosReducer(state = initialState, action) {
       };
     }
     case 'GET_AUDIO_COMPLETE': {
-      const { data } = action.payload;
+      const { items } = action.payload;
       return {
         ...state,
         items: [
           ...state.items,
-          ...data
+          ...items
         ]
       };
     }
