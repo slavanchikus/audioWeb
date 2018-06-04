@@ -22,7 +22,7 @@ export default class AudioContainer extends Component {
 
   handleClick = () => {
     const { item, onPickAudio } = this.props;
-    onPickAudio(item.id);
+    onPickAudio(item);
   };
 
   render() {

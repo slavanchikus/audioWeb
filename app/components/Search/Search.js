@@ -11,7 +11,7 @@ export default class Search extends Component {
   };
 
   state = {
-    value: 'rhcp',
+    value: '',
     isTyping: false,
   };
 

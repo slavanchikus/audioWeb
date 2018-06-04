@@ -4,9 +4,9 @@ export const getAudio = (value, page) => ({
   page,
 });
 
-export const pickAudio = (id, queue) => ({
+export const pickAudio = (audio, queue) => ({
   type: 'PICK_AUDIO',
-  id,
+  audio,
   queue
 });
 

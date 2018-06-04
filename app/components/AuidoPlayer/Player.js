@@ -95,18 +95,17 @@ export default class Player extends PureComponent {
     } else {
       turnAudio = playerQueue[currAudio + 1];
     }
-    if (turnAudio) this.props.pickAudio(turnAudio.id);
+    if (turnAudio) this.props.pickAudio(turnAudio);
   };
 
   render() {
-    const { playerQueue, duration, currentTime, volume, loop, random, loaded } = this.state;
+    const { duration, currentTime, volume, loop, random, loaded } = this.state;
     const { audio } = this.props;
-    const track = playerQueue.find(item => item.id === audio.id);
     return (
       <div className={styles.container}>
         <audio
           ref={node => (this.audio = node)}
-          src={track.url}
+          src={audio.url}
           autoPlay={audio.isPlaying}
           loop={loop}
         />
@@ -122,8 +121,8 @@ export default class Player extends PureComponent {
           onMoveAudio={this.handleMoveAudio}
         />
         <div className={styles.info}>
-          <div>{track.artist}</div>
-          <div>{track.title}</div>
+          <div>{audio.artist}</div>
+          <div>{audio.title}</div>
         </div>
         <QueueManage
           loop={loop}
