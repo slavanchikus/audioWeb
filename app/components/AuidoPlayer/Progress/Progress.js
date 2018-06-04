@@ -42,10 +42,11 @@ export default class Progress extends Component {
         <div className={styles.duration}>
           {this.handleTransformTime(Math.round(duration))}
         </div>
+        {loaded &&
         <div
           className={styles.progress}
           style={{ width: `${100 * (currentTime / duration)}%` }}
-        />
+        />}
       </div>
     );
   }
