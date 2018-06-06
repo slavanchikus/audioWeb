@@ -1,4 +1,4 @@
-const host = 'https://blackchat.ru';
+const host = 'http://localhost:8000';
 /* http://localhost:8000 */
 
 export const getAudio = (value, page) => fetch(`${host}/getaudio`, {

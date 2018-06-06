@@ -1,6 +1,7 @@
 const initialState = {
   items: [],
-  page: 1
+  page: 1,
+  value: null
 };
 
 export default function audiosReducer(state = initialState, action) {
@@ -13,7 +14,7 @@ export default function audiosReducer(state = initialState, action) {
     }
     case 'GET_AUDIO': {
       const { value } = action;
-      if (state.value && state.value !== value) {
+      if (state.value !== value) {
         return {
           ...state,
           value,

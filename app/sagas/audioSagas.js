@@ -1,5 +1,5 @@
 import { fork, call, put, takeEvery } from 'redux-saga/effects';
-import { getAudio, listenAudio } from '../api/vkApi';
+import { getAudio, listenAudio } from '../api/audioApi';
 
 function* fetchAudio({ value, page }) {
   try {
@@ -29,7 +29,7 @@ function* watchListenRequest() {
   yield takeEvery('PICK_AUDIO', fetchListen);
 }
 
-export function* vkSagas() {
+export function* audioSagas() {
   yield fork(watchAudioRequest);
   yield fork(watchListenRequest);
 }

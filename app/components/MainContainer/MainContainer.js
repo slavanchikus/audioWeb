@@ -24,7 +24,8 @@ const mapDispatchToProps = dispatch =>
 
 class MainContainer extends Component {
   componentDidMount() {
-    this.props.getAudio('rhcp', this.props.list.page);
+    const { value, page } = this.props.list;
+    this.props.getAudio(value, page);
   }
 
   componentWillReceiveProps({ list, uiState }) {

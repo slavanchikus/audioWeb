@@ -19,7 +19,7 @@ export default class Search extends Component {
     if (prevState.isTyping && !this.state.isTyping) {
       const { getAudio } = this.props;
       if (this.state.value.length === 0) {
-        getAudio('rhcp', 1);
+        getAudio(null, 1);
       } else {
         getAudio(this.state.value, 1);
       }
