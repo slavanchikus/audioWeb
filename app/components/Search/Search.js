@@ -33,7 +33,7 @@ export default class Search extends Component {
     if (this.typingDelay !== undefined) {
       clearTimeout(this.typingDelay);
     }
-    this.typingDelay = setTimeout(() => this.setState({ isTyping: false }), 500);
+    this.typingDelay = setTimeout(() => this.setState({ isTyping: false }), 1000);
     this.setState({ value: e.target.value });
   };
 

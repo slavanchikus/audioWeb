@@ -4,9 +4,9 @@
   "description": "VK music of user",
   "main": "index.js",
   "scripts": {
-    "start": "webpack -d && webpack-dev-server --content-base build/ --hot",
-    "build": "webpack --config=webpack.build.config.babel.js",
-    "dev": "nodemon ./server/server.js"
+    "dev": "webpack -d && webpack-dev-server --content-base build/ --hot --mode development",
+    "build": "webpack --mode production",
+    "server": "nodemon ./server/server.js"
   },
   "keywords": [],
   "author": "",
@@ -26,14 +26,12 @@
     "reselect": "3.0.1"
   },
   "devDependencies": {
-    "assets-webpack-plugin": "^3.5.1",
     "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-eslint": "^7.2.3",
-    "babel-jest": "^21.0.0",
-    "babel-loader": "^7.1.2",
+    "babel-loader": "^7.1.4",
     "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "css-loader": "^0.28.7",
@@ -42,16 +40,15 @@
     "eslint-plugin-import": "^2.3.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.1.0",
-    "extract-text-webpack-plugin": "^3.0.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^0.11.2",
     "nodemon": "^1.14.11",
-    "react-hot-loader": "3.0.0-beta.7",
     "request": "^2.85.0",
-    "style-loader": "^0.19.0",
+    "style-loader": "^0.21.0",
     "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.1",
-    "uglifyjs-webpack-plugin": "^1.1.6",
-    "webpack": "^3.4.1",
-    "webpack-dev-server": "^2.4.5"
+    "stylus-loader": "^3.0.2",
+    "webpack": "^4.11.1",
+    "webpack-cli": "^3.0.2",
+    "webpack-dev-server": "^3.0.1"
   }
 }

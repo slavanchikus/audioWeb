@@ -37,20 +37,11 @@ export default () => ({
         })
       },
       {
-        test: /\.jsx$|\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules\/*/,
         use: [
           {
             loader: 'babel-loader',
-            options: {
-              babelrc: false,
-              presets: [
-                                    ['env', { modules: false }],
-                'react',
-                'stage-0'
-              ],
-              plugins: ['react-hot-loader/babel']
-            }
           }
         ],
       },
@@ -62,11 +53,7 @@ export default () => ({
     ],
   },
   plugins: [
-    new ExtractTextPlugin({
-      filename: '[name].css',
-      allChunks: true,
-      disable: true
-    }),
+    new ExtractTextPlugin({ filename: 'bundle.css' }),
   ],
   devServer: {
     https: true,
