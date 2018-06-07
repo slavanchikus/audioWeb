@@ -5,8 +5,10 @@ function parseBody(body) {
   const $ = cheerio.load(body);
   const audios = [];
   $('div[data-rbt-content-id=""]').each((i, el) => {
-    const artist = el.children[0].children[1].children[0].children[0];
-    const title = el.children[0].children[3].children[0].children[0];
+    const artist = el.children[0].children[1].children[0].children ?
+      el.children[0].children[1].children[0].children[0] : el.children[0].children[1].children[0];
+    const title = el.children[0].children[3].children[0].children ?
+      el.children[0].children[3].children[0].children[0] : el.children[0].children[3].children[0];
     audios.push({
       id: el.attribs['data-dkey'],
       artist: artist ? artist.data : 'Без названия',

@@ -25,10 +25,20 @@ export default class AudioContainer extends Component {
     onPickAudio(item);
   };
 
+  handleDuration = (duration) => {
+    const secNum = parseInt(duration, 10);
+    const hours = Math.floor(secNum / 3600) % 24;
+    const minutes = Math.floor(secNum / 60) % 60;
+    const seconds = secNum % 60;
+    return [hours, minutes, seconds]
+        .map(v => v < 10 ? `0${v}` : v)
+        .filter((v, i) => v !== '00' || i > 0)
+        .join(':');
+  };
+
   render() {
     const { index, item, active } = this.props;
-    const min = Math.floor(item.duration / 60);
-    const sec = `0${item.duration - (min * 60)}`;
+    const duration = this.handleDuration(item.duration);
     const className = cx(styles.container, {
       [styles.playing]: active.id === item.id,
     });
@@ -49,7 +59,7 @@ export default class AudioContainer extends Component {
           <div className={styles.index}>{index + 1}</div>}
         <div>{item.artist}</div>
         <div>{item.title}</div>
-        <div>{`${min}:${sec.substr(-2)}`}</div>
+        <div>{duration}</div>
       </div>
     );
   }

@@ -19,10 +19,15 @@ export default class Progress extends Component {
     );
   };
 
-  handleTransformTime = (time) => {
-    const min = Math.floor(time / 60);
-    const sec = `0${time - (min * 60)}`;
-    return `${min}:${sec.substr(-2)}`;
+  handleTransformTime = (duration) => {
+    const secNum = parseInt(duration, 10);
+    const hours = Math.floor(secNum / 3600) % 24;
+    const minutes = Math.floor(secNum / 60) % 60;
+    const seconds = secNum % 60;
+    return [hours, minutes, seconds]
+      .map(v => v < 10 ? `0${v}` : v)
+      .filter((v, i) => v !== '00' || i > 0)
+      .join(':');
   };
 
   render() {
@@ -37,10 +42,10 @@ export default class Progress extends Component {
         onClick={this.handleClick}
       >
         <div className={styles.played}>
-          {this.handleTransformTime(Math.round(currentTime))}
+          {this.handleTransformTime(currentTime)}
         </div>
         <div className={styles.duration}>
-          {this.handleTransformTime(Math.round(duration))}
+          {this.handleTransformTime(duration)}
         </div>
         {loaded &&
         <div

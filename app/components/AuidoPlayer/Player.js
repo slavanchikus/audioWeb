@@ -18,7 +18,6 @@ export default class Player extends PureComponent {
 
   state = {
     playerQueue: this.props.queue,
-    duration: 0,
     currentTime: 0,
     volume: 1,
     loop: false,
@@ -52,7 +51,7 @@ export default class Player extends PureComponent {
   };
 
   handleAudioLoaded = () => {
-    this.setState({ duration: this.audio.duration, loaded: true });
+    this.setState({ loaded: true });
   };
 
   handleAudioEnded = () => {
@@ -99,7 +98,7 @@ export default class Player extends PureComponent {
   };
 
   render() {
-    const { duration, currentTime, volume, loop, random, loaded } = this.state;
+    const { currentTime, volume, loop, random, loaded } = this.state;
     const { audio } = this.props;
     return (
       <div className={styles.container}>
@@ -111,7 +110,7 @@ export default class Player extends PureComponent {
         />
         <Progress
           loaded={loaded}
-          duration={duration}
+          duration={audio.duration}
           currentTime={currentTime}
           onRewindTime={this.handleRewindTime}
         />
