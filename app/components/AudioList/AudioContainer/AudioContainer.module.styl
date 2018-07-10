@@ -1,0 +1,79 @@
+.container
+  display: flex
+  flex-direction: row
+  padding: 12px 0
+  margin-top: -1px
+  box-sizing: border-box
+  border-bottom: 2px solid white
+  cursor: pointer
+  transition: all 0.1s ease
+  font-size: 15px;
+  &:hover
+    border-color: #ffa95e
+  >div
+    flex-shrink: 0
+    white-space: nowrap
+    text-overflow: ellipsis
+    overflow: hidden
+    &:nth-child(1)
+      width: 6%
+      height: 18px
+    &:nth-child(2)
+      width: 32%
+      font-weight: 600
+      padding-right: 25px
+      box-sizing: border-box
+    &:nth-child(3)
+      width: 50%
+    &:nth-child(4)
+      width: 12%
+      text-align: right
+
+.animation
+  width: 18px
+  height: 18px
+  position: relative
+  span
+    margin: 0 auto
+    display: block
+    width: 18px
+    height: 18px
+    border-radius: 9px
+    position: absolute
+    &:nth-child(1)
+      top: 0
+      background: #ffa95e
+      animation: circleScale 3s infinite
+      animation-delay: 1.5s
+      z-index:1
+    &:nth-child(2)
+      top: 0
+      background: red
+      animation: circleScale 3s infinite
+      z-index: 10
+
+@keyframes circleScale
+  0%
+    transform: scale(0)
+  50%
+    transform: scale(1)
+  100%
+    transform: scale(0)
+
+@media (max-width: 500px)
+  .container
+    flex-wrap: wrap
+    >div
+      &:nth-child(1)
+        display: none
+      &:nth-child(2)
+        width: 88%
+      &:nth-child(3)
+        width: 88%
+        margin-top: 3px
+      &:nth-child(4)
+        font-size: 11px
+        align-self: flex-end
+
+  .playing
+    border-color: #ffa95e

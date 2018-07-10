@@ -1,7 +1,7 @@
 import { fork } from 'redux-saga/effects';
 
-import { vkSagas } from './vkSagas';
+import { audioSagas } from './audioSagas';
 
 export default function* sagas() {
-  yield fork(vkSagas);
+  yield fork(audioSagas);
 }

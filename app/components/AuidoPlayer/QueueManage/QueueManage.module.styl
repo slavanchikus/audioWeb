@@ -1,0 +1,35 @@
+.container
+  display: flex
+  flex-direction: row
+  align-items: center
+  margin-left: auto
+  >div
+    cursor: pointer
+    &:nth-child(2)
+      margin-left: 20px
+    &:hover
+      svg
+        path
+          fill: #ffa95e
+
+.item
+  svg
+    path
+      fill: rgb(163, 162, 162) !important
+
+.loop, .random
+  svg
+    path
+      fill: #ffa95e !important
+
+@media (max-width: 500px)
+  .container
+    width: 100%
+    justify-content: center
+    >div
+      &:nth-child(2)
+        margin-left: 50px
+      &:hover
+        svg
+          path
+            fill: rgb(163, 162, 162)

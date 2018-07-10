@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux';
 
-import user from './userReducer';
-import uiState from './uiStateReducer';
 import audio from './audioReducer';
+import queue from './queueReducer';
+import list from './listReducer';
+import uiState from './uiStateReducer';
 
 const rootReducer = combineReducers({
-  user,
   audio,
+  queue,
+  list,
   uiState
 });
 

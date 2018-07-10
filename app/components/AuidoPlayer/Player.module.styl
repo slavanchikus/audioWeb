@@ -1,0 +1,30 @@
+.container
+  height: 80px
+  display: flex
+  flex-direction: row
+  align-items: center
+  position: relative
+  padding-top: 7px
+  border-top: 1px solid
+  border-color: rgb(163, 162, 162, 0.53)
+  box-sizing: border-box
+  flex-shrink: 0
+
+.info
+  max-width: 60%
+  >div
+    white-space: nowrap
+    text-overflow: ellipsis
+    overflow: hidden
+    &:nth-child(1)
+      font-weight: 600
+
+@media (max-width: 500px)
+  .container
+    height: 160px
+    flex-wrap: wrap
+
+  .info
+    width: 100%
+    max-width: 100%
+    text-align: center

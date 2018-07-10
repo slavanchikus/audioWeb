@@ -1,12 +1,19 @@
-export const tokenRequest = () => ({
-  type: 'TOKEN_REQUEST',
+export const getAudio = (value, page) => ({
+  type: 'GET_AUDIO',
+  value,
+  page,
 });
 
-export const userRequest = inputValue => ({
-  type: 'USER_REQUEST',
-  inputValue,
+export const pickAudio = (audio, queue) => ({
+  type: 'PICK_AUDIO',
+  audio,
+  queue
 });
 
-export const resetStore = () => ({
-  type: 'RESET_STORE',
+export const togglePlaying = () => ({
+  type: 'TOGGLE_PLAYING',
+});
+
+export const setPage = () => ({
+  type: 'SET_PAGE',
 });
