@@ -11,14 +11,3 @@ export const getAudio = (value, page) => fetch(`${host}/getaudio`, {
   .catch((error) => {
     throw error;
   });
-
-export const listenAudio = url => fetch(`${host}/listen`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({ url }),
-}).then(response => response.json())
-  .catch((error) => {
-    throw error;
-  });

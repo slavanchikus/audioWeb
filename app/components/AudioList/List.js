@@ -17,8 +17,9 @@ export default class List extends Component {
   };
 
   handleScroll = () => {
-    const { setPage, isFetching } = this.props;
-    if (!isFetching && this.list.scrollHeight - this.list.scrollTop === this.list.clientHeight) {
+    const { list, setPage, isFetching } = this.props;
+    if (list.hasNextPage && !isFetching &&
+      this.list.scrollHeight - this.list.scrollTop === this.list.clientHeight) {
       setPage();
     }
   };

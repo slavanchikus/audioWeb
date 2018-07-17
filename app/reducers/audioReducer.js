@@ -2,16 +2,16 @@ const initialState = {};
 
 export default function audioReducer(state = initialState, action) {
   switch (action.type) {
-    case 'PICK_AUDIO_COMPLETE': {
-      const { payload } = action;
-      if (payload.id === state.id) {
+    case 'PICK_AUDIO': {
+      const { audio } = action;
+      if (audio.id === state.id) {
         return {
           ...state,
           isPlaying: !state.isPlaying
         };
       }
       return {
-        ...payload,
+        ...audio,
         isPlaying: true
       };
     }
