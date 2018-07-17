@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import { searchIcon, audioIcon } from '../../uikit/svgIcons';
 
 import styles from './Search.module.styl';
 
-export default class Search extends Component {
+export default class Search extends PureComponent {
   static propTypes = {
     listValue: PropTypes.string.isRequired,
     getAudio: PropTypes.func.isRequired,

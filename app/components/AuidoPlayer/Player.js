@@ -27,6 +27,8 @@ export default class Player extends PureComponent {
 
   componentDidMount() {
     this.audio.play();
+    document.title = this.props.audio.title;
+
     this.audio.addEventListener('timeupdate', this.handleTimeUpdate, false);
     this.audio.addEventListener('loadstart', this.handleAudioLoading, false);
     this.audio.addEventListener('loadeddata', this.handleAudioLoaded, false);
@@ -37,6 +39,7 @@ export default class Player extends PureComponent {
     if ((audio.isPlaying && audio.isPlaying !== this.props.audio.isPlaying)
       || (audio.id !== this.props.audio.id)) {
       this.audio.play();
+      document.title = audio.title;
     }
     if (!audio.isPlaying && audio.isPlaying !== this.props.audio.isPlaying) {
       this.audio.pause();
@@ -119,6 +122,7 @@ export default class Player extends PureComponent {
           onTogglePlay={this.props.togglePlaying}
           onMoveAudio={this.handleMoveAudio}
         />
+        <img src={audio.img} width={40} height={40} alt="pic" />
         <div className={styles.info}>
           <div>{audio.artist}</div>
           <div>{audio.title}</div>

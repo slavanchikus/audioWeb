@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import cx from 'classnames';
@@ -7,7 +7,7 @@ import AudioContainer from './AudioContainer/AudioContainer';
 
 import styles from './List.module.styl';
 
-export default class List extends Component {
+export default class List extends PureComponent {
   static propTypes = {
     audio: PropTypes.object.isRequired,
     list: PropTypes.object.isRequired,
