@@ -46,7 +46,6 @@ export default class List extends PureComponent {
           list.items.map((item, i) =>
             <AudioContainer
               key={`${item.id}++${i}`}
-              index={i}
               item={item}
               active={audio}
               onPickAudio={this.handlePickAudio}

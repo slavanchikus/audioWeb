@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import Vibrant from 'node-vibrant';
+
 import cx from 'classnames';
 
 import { playIcon } from '../../../uikit/svgIcons';
@@ -9,7 +11,6 @@ import styles from './AudioContainer.module.styl';
 
 export default class AudioContainer extends Component {
   static propTypes = {
-    index: PropTypes.number.isRequired,
     item: PropTypes.object.isRequired,
     active: PropTypes.object.isRequired,
     onPickAudio: PropTypes.func.isRequired
@@ -36,16 +37,29 @@ export default class AudioContainer extends Component {
         .join(':');
   };
 
+  handleImgLoaded = () => {
+    Vibrant.from(this.img.src).getPalette((err, palette) => {
+      if (palette && palette.LightMuted) {
+        const rgb = palette.LightMuted.getRgb();
+        this.container.style.backgroundColor = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.2)`;
+      }
+    });
+  };
+
   render() {
-    const { index, item, active } = this.props;
+    const { item, active } = this.props;
     const duration = this.handleDuration(item.duration);
     const className = cx(styles.container, {
       [styles.playing]: active.id === item.id,
     });
     return (
-      <div className={className} onClick={this.handleClick}>
+      <div
+        className={className}
+        ref={node => (this.container = node)}
+        onClick={this.handleClick}
+      >
         {active.id === item.id ?
-          <div>
+          <div className={styles.active}>
             {active.isPlaying ?
               <div className={styles.animation}>
                 <span />
@@ -56,7 +70,16 @@ export default class AudioContainer extends Component {
             }
           </div>
           :
-          <div className={styles.index}>{index + 1}</div>}
+          <div className={styles.img}>
+            <img
+              ref={node => (this.img = node)}
+              src={item.img}
+              width={40}
+              height={40}
+              alt="pic"
+              onLoad={this.handleImgLoaded}
+            />
+          </div>}
         <div>{item.artist}</div>
         <div>{item.title}</div>
         <div>{duration}</div>

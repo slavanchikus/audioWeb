@@ -122,7 +122,12 @@ export default class Player extends PureComponent {
           onTogglePlay={this.props.togglePlaying}
           onMoveAudio={this.handleMoveAudio}
         />
-        <img src={audio.img} width={40} height={40} alt="pic" />
+        <img
+          src={audio.img}
+          width={60}
+          height={60}
+          alt="pic"
+        />
         <div className={styles.info}>
           <div>{audio.artist}</div>
           <div>{audio.title}</div>

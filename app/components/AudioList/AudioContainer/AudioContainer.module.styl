@@ -1,13 +1,14 @@
 .container
   display: flex
   flex-direction: row
-  padding: 12px 0
+  align-items: center
+  padding: 10px
   margin-top: -1px
   box-sizing: border-box
   border-bottom: 2px solid white
   cursor: pointer
-  transition: all 0.1s ease
-  font-size: 15px;
+  font-size: 15px
+  transition: all 0.5s ease
   &:hover
     border-color: #ffa95e
   >div
@@ -16,15 +17,17 @@
     text-overflow: ellipsis
     overflow: hidden
     &:nth-child(1)
-      width: 6%
-      height: 18px
+      width: 7%
+      height: 40px
+      display: flex
+      align-items: center
     &:nth-child(2)
       width: 32%
       font-weight: 600
       padding-right: 25px
       box-sizing: border-box
     &:nth-child(3)
-      width: 50%
+      width: 49%
     &:nth-child(4)
       width: 12%
       text-align: right
@@ -51,6 +54,13 @@
       background: red
       animation: circleScale 3s infinite
       z-index: 10
+
+.playing
+  border-color: #f66
+
+.active
+  padding-left: 10px
+  box-sizing: border-box
 
 @keyframes circleScale
   0%
