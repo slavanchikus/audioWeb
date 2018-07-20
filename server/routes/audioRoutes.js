@@ -16,7 +16,7 @@ function parseSearchBody(body) {
       artist: artist || 'Без названия',
       title: title || 'Без названия',
       duration: el.attribs['data-duration'] / 1000,
-      url: `https://music.xn--41a.wiki${el.attribs['data-mp3']}`,
+      listenUrl: `https://music.xn--41a.wiki${el.attribs['data-mp3']}`,
       img,
       imgCors: false
     });
@@ -39,7 +39,7 @@ function parseTopBody(body) {
       artist: artist || 'Без названия',
       title: title || 'Без названия',
       duration: el.attribs['data-duration'] / 1000,
-      url: `https://music.xn--41a.wiki${el.attribs['data-mp3']}`,
+      listenUrl: `https://music.xn--41a.wiki${el.attribs['data-mp3']}`,
       img,
       imgCors: true
     });
@@ -80,11 +80,11 @@ module.exports = function(app) {
   });
 
   app.post('/listen', (mainReq, mainRes) => {
-    const { url } = mainReq.body;
-    request({ url, encoding: null, followRedirect: false }, (err, res) => {
+    const { listenUrl } = mainReq.body;
+    request({ url: listenUrl, encoding: null, followRedirect: false }, (err, res) => {
       if (res.caseless) {
         const audioUrl = res.caseless.dict.location;
-        mainRes.send({ url: audioUrl });
+        mainRes.send({ audioUrl });
       }
     });
   });

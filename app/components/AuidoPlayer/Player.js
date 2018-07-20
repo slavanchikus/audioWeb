@@ -107,7 +107,7 @@ export default class Player extends PureComponent {
       <div className={styles.container}>
         <audio
           ref={node => (this.audio = node)}
-          src={audio.url}
+          src={audio.audioUrl}
           autoPlay={audio.isPlaying}
           loop={loop}
         />
