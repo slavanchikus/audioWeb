@@ -15,6 +15,13 @@ export default function audioReducer(state = initialState, action) {
         isPlaying: true
       };
     }
+    case 'PICK_AUDIO_COMPLETE': {
+      const { audio } = action;
+      return {
+        ...state,
+        ...audio,
+      };
+    }
     case 'TOGGLE_PLAYING': {
       return {
         ...state,

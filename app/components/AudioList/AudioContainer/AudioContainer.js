@@ -38,12 +38,19 @@ export default class AudioContainer extends Component {
   };
 
   handleImgLoaded = () => {
-    Vibrant.from(this.img.src).getPalette((err, palette) => {
-      if (palette && palette.LightMuted) {
-        const rgb = palette.LightMuted.getRgb();
-        this.container.style.backgroundColor = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.2)`;
-      }
-    });
+    const { item } = this.props;
+    if (!item.imgCors) {
+      Vibrant.from(this.img.src).getPalette((err, palette) => {
+        if (palette && palette.LightMuted) {
+          const rgb = palette.LightMuted.getRgb();
+          this.container.style.backgroundColor = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0.2)`;
+        }
+      });
+    } else {
+      this.container.style.backgroundColor = `rgba(${Math.floor(Math.random() * 56) + 200},
+      ${Math.floor(Math.random() * 56) + 200},
+      ${Math.floor(Math.random() * 56) + 200},0.2)`;
+    }
   };
 
   render() {

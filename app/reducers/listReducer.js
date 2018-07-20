@@ -1,7 +1,7 @@
 const initialState = {
   items: [],
   page: 1,
-  value: 'rhcp'
+  value: ''
 };
 
 export default function audiosReducer(state = initialState, action) {

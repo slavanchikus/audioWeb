@@ -21,7 +21,7 @@ export default class Search extends PureComponent {
       const { listValue, getAudio } = this.props;
       if (listValue.trim() !== this.state.value.trim()) {
         if (this.state.value.length === 0) {
-          getAudio('rhcp', 1);
+          getAudio('', 1);
         } else {
           getAudio(this.state.value, 1);
         }
