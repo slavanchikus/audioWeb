@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import { searchIcon, audioIcon } from '../../uikit/svgIcons';
 
 import styles from './Search.module.styl';
 
-export default class Search extends Component {
+export default class Search extends PureComponent {
   static propTypes = {
+    listValue: PropTypes.string.isRequired,
     getAudio: PropTypes.func.isRequired,
   };
 
@@ -17,11 +18,13 @@ export default class Search extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.isTyping && !this.state.isTyping) {
-      const { getAudio } = this.props;
-      if (this.state.value.length === 0) {
-        getAudio(null, 1);
-      } else {
-        getAudio(this.state.value, 1);
+      const { listValue, getAudio } = this.props;
+      if (listValue.trim() !== this.state.value.trim()) {
+        if (this.state.value.length === 0) {
+          getAudio('', 1);
+        } else {
+          getAudio(this.state.value, 1);
+        }
       }
     }
   }
@@ -38,8 +41,11 @@ export default class Search extends Component {
   };
 
   handleSearchClick = () => {
-    const { getAudio } = this.props;
-    getAudio(this.state.value, 0);
+    const { value } = this.state;
+    const { listValue, getAudio } = this.props;
+    if (value.trim() !== listValue.trim()) {
+      getAudio(this.state.value, 0);
+    }
   };
 
   render() {

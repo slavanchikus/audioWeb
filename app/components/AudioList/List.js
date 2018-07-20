@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import cx from 'classnames';
@@ -7,7 +7,7 @@ import AudioContainer from './AudioContainer/AudioContainer';
 
 import styles from './List.module.styl';
 
-export default class List extends Component {
+export default class List extends PureComponent {
   static propTypes = {
     audio: PropTypes.object.isRequired,
     list: PropTypes.object.isRequired,
@@ -17,8 +17,9 @@ export default class List extends Component {
   };
 
   handleScroll = () => {
-    const { setPage, isFetching } = this.props;
-    if (!isFetching && this.list.scrollHeight - this.list.scrollTop === this.list.clientHeight) {
+    const { list, setPage, isFetching } = this.props;
+    if (list.hasNextPage && !isFetching &&
+      this.list.scrollHeight - this.list.scrollTop === this.list.clientHeight) {
       setPage();
     }
   };
@@ -45,7 +46,6 @@ export default class List extends Component {
           list.items.map((item, i) =>
             <AudioContainer
               key={`${item.id}++${i}`}
-              index={i}
               item={item}
               active={audio}
               onPickAudio={this.handlePickAudio}

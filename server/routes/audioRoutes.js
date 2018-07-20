@@ -1,75 +1,90 @@
 const request = require('request');
 const cheerio = require('cheerio');
 
-function parseBody(body) {
+function parseSearchBody(body) {
   const $ = cheerio.load(body);
+
+  const hasNextPage = !!$('ul.listalka').attr('data-next-page');
+
   const audios = [];
-  $('div[data-rbt-content-id=""]').each((i, el) => {
-    const artist = el.children[0].children[1].children[0].children ?
-      el.children[0].children[1].children[0].children[0] : el.children[0].children[1].children[0];
-    const title = el.children[0].children[3].children[0].children ?
-      el.children[0].children[3].children[0].children[0] : el.children[0].children[3].children[0];
+  $('li.track').each((i, el) => {
+    const artist = el.children[7].children[1].children[0].data;
+    const title = el.children[7].children[3].children[0].data;
+    const img = el.children[3].children[1].attribs.src;
     audios.push({
-      id: el.attribs['data-dkey'],
-      artist: artist ? artist.data : 'Без названия',
-      title: title ? title.data : 'Без названия',
-      duration: el.attribs['data-duration'],
-      url: el.attribs['data-url'],
+      id: el.attribs['data-id'],
+      artist: artist || 'Без названия',
+      title: title || 'Без названия',
+      duration: el.attribs['data-duration'] / 1000,
+      url: `https://music.xn--41a.wiki${el.attribs['data-mp3']}`,
+      img,
+      imgCors: false
     });
   });
-  return audios;
+  return {
+    audios,
+    hasNextPage
+  };
+}
+
+function parseTopBody(body) {
+  const $ = cheerio.load(body);
+  const audios = [];
+  $('li.track').each((i, el) => {
+    const artist = el.children[7].children[1].children[0].children[0].data;
+    const title = el.children[7].children[3].children[0].children[0].data;
+    const img = el.children[3].children[1].attribs.src;
+    audios.push({
+      id: el.attribs['data-id'],
+      artist: artist || 'Без названия',
+      title: title || 'Без названия',
+      duration: el.attribs['data-duration'] / 1000,
+      url: `https://music.xn--41a.wiki${el.attribs['data-mp3']}`,
+      img,
+      imgCors: true
+    });
+  });
+  return {
+    audios,
+    hasNextPage: true
+  };
 }
 
 module.exports = function(app) {
   app.post('/getaudio', (mainReq, mainRes) => {
     const { value, page } = mainReq.body;
     let url;
-    if (value) {
-      url = `http://zaycev.net/search.html?page=${page}&query_search=${value}`;
+    if (value !== '') {
+      if (page === 1) {
+        url = `https://music.xn--41a.wiki/search/${value}/`;
+      } else {
+        url = `https://music.xn--41a.wiki/search/${value}/${page}/`;
+      }
+    } else if (page === 1) {
+      url = 'https://music.xn--41a.wiki/';
     } else {
-      url = `http://zaycev.net/top/more.html?page=${page}`;
+      url = `https://music.xn--41a.wiki/page/${page}/`;
     }
-    request({ url: encodeURI(url), method: 'GET' }, (err, res, body) => {
+
+    request({ url: encodeURI(url), method: 'GET', }, (err, res, body) => {
       if (body) {
-        const audios = parseBody(body);
-        const currTime = Math.round(+new Date() / 1000);
-        const restriction = audios.reduce((sum, currentItem) => {
-          sum[`streaming_${currentItem.id}`] = {
-            activity: 'streaming',
-            dKey: { value: currentItem.id },
-            geo: [['ru', 'spe']],
-            timestamp: currTime
-          };
-          return sum;
-        }, {});
-        request({
-          url: 'http://filezmeta.zaycev.net/v2/checkRestriction',
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ list: restriction }),
-        }, (subErr, subRes, subBody) => {
-          const audiosChecked = JSON.parse(subBody);
-          const response = [];
-          Object.keys(audiosChecked.res).forEach((item) => {
-            const audioId = item.slice(10);
-            if (audiosChecked.res[item] !== false) {
-              const index = audios.findIndex(i => i.id === audioId);
-              response.push(audios[index]);
-            }
-          });
-          mainRes.send({ items: response });
-        });
+        if (value) {
+          const { audios, hasNextPage } = parseSearchBody(body);
+          mainRes.send({ items: audios, hasNextPage });
+        } else {
+          const { audios, hasNextPage } = parseTopBody(body);
+          mainRes.send({ items: audios, hasNextPage });
+        }
       }
     });
   });
 
   app.post('/listen', (mainReq, mainRes) => {
     const { url } = mainReq.body;
-    const reqUrl = `http://zaycev.net${url}`;
-    request({ url: reqUrl, method: 'GET' }, (err, res, body) => {
-      if (body) {
-        const resUrl = JSON.parse(body);
-        mainRes.send({ ...resUrl });
+    request({ url, encoding: null, followRedirect: false }, (err, res) => {
+      if (res.caseless) {
+        const audioUrl = res.caseless.dict.location;
+        mainRes.send({ url: audioUrl });
       }
     });
   });

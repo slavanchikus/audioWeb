@@ -1,7 +1,7 @@
 const initialState = {
   items: [],
   page: 1,
-  value: null
+  value: ''
 };
 
 export default function audiosReducer(state = initialState, action) {
@@ -28,13 +28,14 @@ export default function audiosReducer(state = initialState, action) {
       };
     }
     case 'GET_AUDIO_COMPLETE': {
-      const { items } = action.payload;
+      const { items, hasNextPage } = action.payload;
       return {
         ...state,
         items: [
           ...state.items,
           ...items
-        ]
+        ],
+        hasNextPage
       };
     }
     default:

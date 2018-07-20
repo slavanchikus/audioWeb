@@ -39,6 +39,7 @@ class MainContainer extends Component {
     return (
       <div className={styles.container}>
         <Search
+          listValue={list.value}
           getAudio={this.props.getAudio}
         />
         <AudioList
