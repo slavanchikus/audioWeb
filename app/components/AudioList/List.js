@@ -11,27 +11,23 @@ export default class List extends PureComponent {
   static propTypes = {
     audio: PropTypes.object.isRequired,
     list: PropTypes.object.isRequired,
-    isFetching: PropTypes.bool.isRequired,
+    uiState: PropTypes.object.isRequired,
     setPage: PropTypes.func.isRequired,
     pickAudio: PropTypes.func.isRequired
   };
 
   handleScroll = () => {
-    const { list, setPage, isFetching } = this.props;
-    if (list.hasNextPage && !isFetching &&
+    const { list, setPage, uiState } = this.props;
+    if (list.hasNextPage && !uiState.isFetchingList &&
       this.list.scrollHeight - this.list.scrollTop === this.list.clientHeight) {
       setPage();
     }
   };
 
-  handlePickAudio = (id) => {
-    this.props.pickAudio(id, this.props.list.items);
-  };
-
   render() {
-    const { audio, list, isFetching } = this.props;
+    const { audio, list, uiState, pickAudio } = this.props;
     const containerClassName = cx(styles.container, {
-      [styles.fetching]: isFetching
+      [styles.fetching]: uiState.isFetchingList
     });
     return (
       <div className={containerClassName} onScroll={this.handleScroll} ref={node => (this.list = node)}>
@@ -48,9 +44,9 @@ export default class List extends PureComponent {
               key={`${item.id}++${i}`}
               item={item}
               active={audio}
-              onPickAudio={this.handlePickAudio}
+              onPickAudio={pickAudio}
             />)}
-          {!isFetching && list.items.length < 1 &&
+          {!uiState.isFetchingList && list.items.length < 1 &&
           <div className={styles.empty}>Не найдено ни одной аудиозаписи</div>}
         </div>
         <div className={styles.loader_wrapper}>

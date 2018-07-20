@@ -40,10 +40,16 @@ export default class Player extends PureComponent {
       || (audio.id !== this.props.audio.id)) {
       this.audio.play();
       document.title = audio.title;
-    }
-    if (!audio.isPlaying && audio.isPlaying !== this.props.audio.isPlaying) {
+    } else if (!audio.isPlaying && audio.isPlaying !== this.props.audio.isPlaying) {
       this.audio.pause();
     }
+
+    if (this.props.audio && audio && this.state.loaded
+      && this.props.audio.id !== audio.id) {
+      this.audio.pause();
+      this.setState({ loaded: false });
+    }
+
     if (queue !== this.props.queue) {
       this.setState({ playerQueue: queue });
     }
