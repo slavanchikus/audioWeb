@@ -34,12 +34,12 @@ class MainContainer extends Component {
     }
   }
 
-  handlePickAudio = (clickedAudio) => {
-    const { audio, queue, list, uiState } = this.props;
+  handleAudioContainerClick = (clickedAudio) => {
+    const { audio, queue, list } = this.props;
 
     const currQueue = queue.find(i => i.id === clickedAudio.id) ? null : list.items;
 
-    if (audio.id !== clickedAudio.id && !uiState.isFetchingAudio) {
+    if (audio.id !== clickedAudio.id) {
       this.props.pickAudio(clickedAudio, currQueue);
     } else {
       this.props.togglePlaying();
@@ -59,14 +59,15 @@ class MainContainer extends Component {
           list={list}
           uiState={uiState}
           setPage={this.props.setPage}
-          pickAudio={this.handlePickAudio}
+          pickAudio={this.handleAudioContainerClick}
         />
         {audio.id && queue.length > 0 &&
         <AudioPlayer
           audio={audio}
           queue={queue}
+          isFetchingAudio={uiState.isFetchingAudio}
           togglePlaying={this.props.togglePlaying}
-          pickAudio={this.handlePickAudio}
+          pickAudio={this.props.pickAudio}
         />}
       </div>
     );

@@ -12,6 +12,7 @@ export default class Player extends PureComponent {
   static propTypes = {
     audio: PropTypes.object.isRequired,
     queue: PropTypes.array.isRequired,
+    isFetchingAudio: PropTypes.object.isRequired,
     togglePlaying: PropTypes.func.isRequired,
     pickAudio: PropTypes.func.isRequired
   };
@@ -35,12 +36,11 @@ export default class Player extends PureComponent {
     this.audio.addEventListener('ended', this.handleAudioEnded, false);
   }
 
-  componentWillReceiveProps({ audio, queue }) {
-    if ((audio.isPlaying && audio.isPlaying !== this.props.audio.isPlaying)
-      || (audio.id !== this.props.audio.id)) {
+  componentWillReceiveProps({ audio, queue, isFetchingAudio }) {
+    if (!isFetchingAudio && audio.isPlaying && !this.props.audio.isPlaying) {
       this.audio.play();
       document.title = audio.title;
-    } else if (!audio.isPlaying && audio.isPlaying !== this.props.audio.isPlaying) {
+    } else if (!audio.isPlaying && this.props.audio.isPlaying) {
       this.audio.pause();
     }
 
@@ -103,7 +103,7 @@ export default class Player extends PureComponent {
     } else {
       turnAudio = playerQueue[currAudio + 1];
     }
-    if (turnAudio) this.props.pickAudio(turnAudio);
+    if (turnAudio) this.props.pickAudio(turnAudio, null);
   };
 
   render() {
