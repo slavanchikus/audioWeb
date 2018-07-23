@@ -39,7 +39,6 @@ export default class Player extends PureComponent {
   componentWillReceiveProps({ audio, queue, isFetchingAudio }) {
     if (!isFetchingAudio && audio.isPlaying && !this.props.audio.isPlaying) {
       this.audio.play();
-      document.title = audio.title;
     } else if (!audio.isPlaying && this.props.audio.isPlaying) {
       this.audio.pause();
     }
@@ -51,7 +50,16 @@ export default class Player extends PureComponent {
     }
 
     if (queue !== this.props.queue) {
-      this.setState({ playerQueue: queue });
+      if (this.state.random) {
+        const newPlayerQueue = [...queue];
+        this.setState({ random: true, playerQueue: newPlayerQueue.sort(() => Math.random() - 0.5) });
+      } else {
+        this.setState({ playerQueue: queue });
+      }
+    }
+
+    if (audio !== this.props.audio) {
+      document.title = audio.title;
     }
   }
 
