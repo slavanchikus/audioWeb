@@ -1,17 +1,30 @@
 const initialState = {
-  isFetching: true
+  isFetchingList: false,
+  isFetchingAudio: false
 };
 
 export default function uiStateReducer(state = initialState, action) {
   switch (action.type) {
     case 'GET_AUDIO': {
       return {
-        isFetching: true
+        isFetchingList: true
       };
     }
+    case 'GET_AUDIO_FAILED':
     case 'GET_AUDIO_COMPLETE': {
       return {
-        isFetching: false
+        isFetchingList: false
+      };
+    }
+    case 'PICK_AUDIO': {
+      return {
+        isFetchingAudio: true
+      };
+    }
+    case 'PICK_AUDIO_FAILED':
+    case 'PICK_AUDIO_COMPLETE': {
+      return {
+        isFetchingAudio: false
       };
     }
     default:

@@ -17,8 +17,8 @@ function* watchAudioRequest() {
 
 function* fetchListen({ audio }) {
   try {
-    const payload = yield call(listenAudio, audio.url);
-    yield put({ type: 'PICK_AUDIO_COMPLETE', audio: { ...audio, url: payload.url }});
+    const payload = yield call(listenAudio, audio.listenUrl);
+    yield put({ type: 'PICK_AUDIO_COMPLETE', audio: { ...audio, audioUrl: payload.audioUrl }});
   } catch (error) {
     yield put({ type: 'PICK_AUDIO_FAILED' });
     throw error;

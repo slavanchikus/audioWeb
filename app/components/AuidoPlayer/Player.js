@@ -12,6 +12,7 @@ export default class Player extends PureComponent {
   static propTypes = {
     audio: PropTypes.object.isRequired,
     queue: PropTypes.array.isRequired,
+    isFetchingAudio: PropTypes.object.isRequired,
     togglePlaying: PropTypes.func.isRequired,
     pickAudio: PropTypes.func.isRequired
   };
@@ -35,17 +36,30 @@ export default class Player extends PureComponent {
     this.audio.addEventListener('ended', this.handleAudioEnded, false);
   }
 
-  componentWillReceiveProps({ audio, queue }) {
-    if ((audio.isPlaying && audio.isPlaying !== this.props.audio.isPlaying)
-      || (audio.id !== this.props.audio.id)) {
+  componentWillReceiveProps({ audio, queue, isFetchingAudio }) {
+    if (!isFetchingAudio && audio.isPlaying && !this.props.audio.isPlaying) {
       this.audio.play();
-      document.title = audio.title;
-    }
-    if (!audio.isPlaying && audio.isPlaying !== this.props.audio.isPlaying) {
+    } else if (!audio.isPlaying && this.props.audio.isPlaying) {
       this.audio.pause();
     }
+
+    if (this.props.audio && audio && this.state.loaded
+      && this.props.audio.id !== audio.id) {
+      this.audio.pause();
+      this.setState({ loaded: false });
+    }
+
     if (queue !== this.props.queue) {
-      this.setState({ playerQueue: queue });
+      if (this.state.random) {
+        const newPlayerQueue = [...queue];
+        this.setState({ random: true, playerQueue: newPlayerQueue.sort(() => Math.random() - 0.5) });
+      } else {
+        this.setState({ playerQueue: queue });
+      }
+    }
+
+    if (audio !== this.props.audio) {
+      document.title = audio.title;
     }
   }
 
@@ -97,7 +111,7 @@ export default class Player extends PureComponent {
     } else {
       turnAudio = playerQueue[currAudio + 1];
     }
-    if (turnAudio) this.props.pickAudio(turnAudio);
+    if (turnAudio) this.props.pickAudio(turnAudio, null);
   };
 
   render() {
@@ -107,7 +121,7 @@ export default class Player extends PureComponent {
       <div className={styles.container}>
         <audio
           ref={node => (this.audio = node)}
-          src={audio.url}
+          src={audio.audioUrl}
           autoPlay={audio.isPlaying}
           loop={loop}
         />
