@@ -5,7 +5,7 @@ import Vibrant from 'node-vibrant';
 
 import cx from 'classnames';
 
-import { playIcon } from '../../../uikit/svgIcons';
+import { playIcon, downloadIcon } from '../../../uikit/svgIcons';
 
 import styles from './AudioContainer.module.styl';
 
@@ -13,7 +13,8 @@ export default class AudioContainer extends Component {
   static propTypes = {
     item: PropTypes.object.isRequired,
     active: PropTypes.object.isRequired,
-    onPickAudio: PropTypes.func.isRequired
+    onPickAudio: PropTypes.func.isRequired,
+    onDownloadAudio: PropTypes.func.isRequired
   };
 
   shouldComponentUpdate(nextProps) {
@@ -21,9 +22,15 @@ export default class AudioContainer extends Component {
       || (this.props.active.id !== nextProps.active.id && this.props.active.id === this.props.item.id);
   }
 
-  handleClick = () => {
+  handleContainerClick = () => {
     const { item, onPickAudio } = this.props;
     onPickAudio(item);
+  };
+
+  handleDownloadClick = (e) => {
+    e.stopPropagation();
+    const { item, onDownloadAudio } = this.props;
+    onDownloadAudio(item);
   };
 
   handleDuration = (duration) => {
@@ -63,7 +70,7 @@ export default class AudioContainer extends Component {
       <div
         className={className}
         ref={node => (this.container = node)}
-        onClick={this.handleClick}
+        onClick={this.handleContainerClick}
       >
         {active.id === item.id ?
           <div className={styles.active}>
@@ -89,7 +96,12 @@ export default class AudioContainer extends Component {
           </div>}
         <div>{item.artist}</div>
         <div>{item.title}</div>
-        <div>{duration}</div>
+        <div>
+          <span>{duration}</span>
+          <div onClick={this.handleDownloadClick}>
+            {downloadIcon()}
+          </div>
+        </div>
       </div>
     );
   }

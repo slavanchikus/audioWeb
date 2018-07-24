@@ -31,6 +31,21 @@
     &:nth-child(4)
       width: 12%
       text-align: right
+      >div
+        width: 20px
+        height: 20px
+        padding: 8px
+        margin-left: auto
+        display: none
+        >svg
+          pointer-events: none
+  &:hover
+    >div
+      &:nth-child(4)
+        >div
+          display: block
+        >span
+          display: none
 
 .animation
   width: 18px

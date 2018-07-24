@@ -27,6 +27,17 @@ export default function uiStateReducer(state = initialState, action) {
         isFetchingAudio: false
       };
     }
+    case 'DOWNLOAD_AUDIO': {
+      return {
+        isDownloadingAudio: true
+      };
+    }
+    case 'DOWNLOAD_AUDIO_FAILED':
+    case 'DOWNLOAD_AUDIO_COMPLETE': {
+      return {
+        isDownloadingAudio: false
+      };
+    }
     default:
       break;
   }
