@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { searchIcon, audioIcon } from '../../uikit/svgIcons';
+import { vkLogo, audioIcon } from '../../uikit/svgIcons';
 
 import styles from './Search.module.styl';
 
@@ -9,6 +9,7 @@ export default class Search extends PureComponent {
   static propTypes = {
     listValue: PropTypes.string.isRequired,
     getAudio: PropTypes.func.isRequired,
+    onIconClick: PropTypes.func.isRequired
   };
 
   state = {
@@ -40,12 +41,8 @@ export default class Search extends PureComponent {
     this.setState({ value: e.target.value });
   };
 
-  handleSearchClick = () => {
-    const { value } = this.state;
-    const { listValue, getAudio } = this.props;
-    if (value.trim() !== listValue.trim()) {
-      getAudio(this.state.value, 0);
-    }
+  handleIconClick = () => {
+    this.props.onIconClick();
   };
 
   render() {
@@ -61,8 +58,8 @@ export default class Search extends PureComponent {
           placeholder="Поиск по аудиозаписям"
           onChange={this.handleChange}
         />
-        <div className={styles.search} onClick={this.handleSearchClick}>
-          {searchIcon()}
+        <div className={styles.logo} onClick={this.handleIconClick}>
+          {vkLogo()}
         </div>
       </div>
     );
