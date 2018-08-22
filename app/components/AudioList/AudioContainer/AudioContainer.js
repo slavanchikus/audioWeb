@@ -14,7 +14,6 @@ export default class AudioContainer extends Component {
     item: PropTypes.object.isRequired,
     active: PropTypes.object.isRequired,
     onPickAudio: PropTypes.func.isRequired,
-    onDownloadAudio: PropTypes.func.isRequired
   };
 
   shouldComponentUpdate(nextProps) {
@@ -29,8 +28,6 @@ export default class AudioContainer extends Component {
 
   handleDownloadClick = (e) => {
     e.stopPropagation();
-    const { item, onDownloadAudio } = this.props;
-    onDownloadAudio(item);
   };
 
   handleDuration = (duration) => {
@@ -39,9 +36,9 @@ export default class AudioContainer extends Component {
     const minutes = Math.floor(secNum / 60) % 60;
     const seconds = secNum % 60;
     return [hours, minutes, seconds]
-        .map(v => v < 10 ? `0${v}` : v)
-        .filter((v, i) => v !== '00' || i > 0)
-        .join(':');
+      .map(v => (v < 10 ? `0${v}` : v))
+      .filter((v, i) => v !== '00' || i > 0)
+      .join(':');
   };
 
   handleImgLoaded = () => {
@@ -98,9 +95,9 @@ export default class AudioContainer extends Component {
         <div>{item.title}</div>
         <div>
           <span>{duration}</span>
-          <div onClick={this.handleDownloadClick}>
+          <a href={item.listenUrl} target="_blank" onClick={this.handleDownloadClick}>
             {downloadIcon()}
-          </div>
+          </a>
         </div>
       </div>
     );

@@ -14,7 +14,6 @@ export default class List extends PureComponent {
     uiState: PropTypes.object.isRequired,
     setPage: PropTypes.func.isRequired,
     pickAudio: PropTypes.func.isRequired,
-    downloadAudio: PropTypes.func.isRequired
   };
 
   handleScroll = () => {
@@ -26,7 +25,7 @@ export default class List extends PureComponent {
   };
 
   render() {
-    const { audio, list, uiState, pickAudio, downloadAudio } = this.props;
+    const { audio, list, uiState, pickAudio } = this.props;
     const containerClassName = cx(styles.container, {
       [styles.fetching]: uiState.isFetchingList
     });
@@ -40,7 +39,6 @@ export default class List extends PureComponent {
               item={item}
               active={audio}
               onPickAudio={pickAudio}
-              onDownloadAudio={downloadAudio}
             />)}
           {!uiState.isFetchingList && list.items.length < 1 &&
           <div className={styles.empty}>Не найдено ни одной аудиозаписи</div>}

@@ -30,31 +30,7 @@ function* watchListenRequest() {
   yield takeEvery('PICK_AUDIO', fetchListen);
 }
 
-
-function* downloadAudio({ audio }) {
-  try {
-    const payload = yield call(listenAudio, audio.listenUrl);
-    const mockA = document.createElement('a');
-    mockA.setAttribute('href', payload.audioUrl);
-    mockA.setAttribute('download', 'download');
-    mockA.setAttribute('target', '_blank');
-    document.body.appendChild(mockA);
-    mockA.click();
-    document.body.removeChild(mockA);
-    yield put({ type: 'DOWNLOAD_AUDIO_COMPLETE' });
-  } catch (error) {
-    yield put({ type: 'DOWNLOAD_AUDIO_FAILED' });
-    throw error;
-  }
-}
-
-function* watchDownloadRequest() {
-  yield takeEvery('DOWNLOAD_AUDIO', downloadAudio);
-}
-
-
 export function* audioSagas() {
   yield fork(watchAudioRequest);
   yield fork(watchListenRequest);
-  yield fork(watchDownloadRequest);
 }

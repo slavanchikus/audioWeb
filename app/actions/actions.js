@@ -10,11 +10,6 @@ export const pickAudio = (audio, queue) => ({
   queue
 });
 
-export const downloadAudio = (audio) => ({
-  type: 'DOWNLOAD_AUDIO',
-  audio,
-});
-
 export const togglePlaying = () => ({
   type: 'TOGGLE_PLAYING',
 });
