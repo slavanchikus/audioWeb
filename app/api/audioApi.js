@@ -7,6 +7,7 @@ export const getAudio = (value, page) => fetch(`${host}/getaudio`, {
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({ value, page }),
+  credentials: 'include'
 }).then(response => response.json())
   .catch((error) => {
     throw error;
@@ -19,6 +20,7 @@ export const listenAudio = listenUrl => fetch(`${host}/listen`, {
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({ listenUrl }),
+  credentials: 'include'
 }).then(response => response.json())
   .catch((error) => {
     throw error;

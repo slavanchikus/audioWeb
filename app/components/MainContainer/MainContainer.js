@@ -9,7 +9,6 @@ import { getAudio, pickAudio, downloadAudio, togglePlaying, setPage } from '../.
 import AudioList from '../AudioList/List';
 import AudioPlayer from '../AuidoPlayer/Player';
 import Search from '../Search/Search';
-import LoginPopup from '../LoginPopup/LoginPopup';
 
 import styles from './MainContainer.module.styl';
 
@@ -24,10 +23,6 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators({ getAudio, pickAudio, downloadAudio, togglePlaying, setPage }, dispatch);
 
 class MainContainer extends Component {
-  state = {
-    loginPopup: false
-  };
-
   componentDidMount() {
     const { value, page } = this.props.list;
     this.props.getAudio(value, page);
@@ -59,23 +54,13 @@ class MainContainer extends Component {
     }
   };
 
-  toggleLoginPopupState = () => {
-    this.setState({ loginPopup: !this.state.loginPopup });
-  };
-
   render() {
-    const { loginPopup } = this.state;
     const { audio, queue, list, uiState } = this.props;
     return (
       <div className={styles.container}>
-        {loginPopup &&
-        <LoginPopup
-          onClose={this.toggleLoginPopupState}
-        />}
         <Search
           listValue={list.value}
           getAudio={this.props.getAudio}
-          onIconClick={this.toggleLoginPopupState}
         />
         <AudioList
           audio={audio}

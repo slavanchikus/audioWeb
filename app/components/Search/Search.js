@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import LoginPopup from './LoginPopup/LoginPopup';
+
 import { vkLogo, audioIcon } from '../../uikit/svgIcons';
 
 import styles from './Search.module.styl';
@@ -9,11 +11,11 @@ export default class Search extends PureComponent {
   static propTypes = {
     listValue: PropTypes.string.isRequired,
     getAudio: PropTypes.func.isRequired,
-    onIconClick: PropTypes.func.isRequired
   };
 
   state = {
     value: '',
+    loginPopup: false,
     isTyping: false,
   };
 
@@ -41,12 +43,13 @@ export default class Search extends PureComponent {
     this.setState({ value: e.target.value });
   };
 
-  handleIconClick = () => {
-    this.props.onIconClick();
+
+  toggleLoginPopupState = () => {
+    this.setState({ loginPopup: !this.state.loginPopup });
   };
 
   render() {
-    const { value } = this.state;
+    const { value, loginPopup } = this.state;
     return (
       <div className={styles.container}>
         <div className={styles.search_type}>
@@ -58,9 +61,13 @@ export default class Search extends PureComponent {
           placeholder="Поиск по аудиозаписям"
           onChange={this.handleChange}
         />
-        <div className={styles.logo} onClick={this.handleIconClick}>
+        <div className={styles.logo} onClick={this.toggleLoginPopupState}>
           {vkLogo()}
         </div>
+        {loginPopup &&
+        <LoginPopup
+          onClose={this.toggleLoginPopupState}
+        />}
       </div>
     );
   }

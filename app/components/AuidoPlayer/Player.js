@@ -8,11 +8,11 @@ import Volume from './Volume/Volume';
 
 import styles from './Player.module.styl';
 
-export default class Player extends PureComponent {
+export default class AudioPlayer extends PureComponent {
   static propTypes = {
     audio: PropTypes.object.isRequired,
     queue: PropTypes.array.isRequired,
-    isFetchingAudio: PropTypes.object.isRequired,
+    isFetchingAudio: PropTypes.bool.isRequired,
     togglePlaying: PropTypes.func.isRequired,
     pickAudio: PropTypes.func.isRequired
   };

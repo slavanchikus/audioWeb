@@ -54,7 +54,7 @@ export default class LoginPopup extends PureComponent {
             onChange={this.handleLoginChange}
           />
           <input
-            type="text"
+            type="password"
             value={password}
             placeholder="Пароль"
             onChange={this.handlePasswordChange}
