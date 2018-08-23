@@ -1,21 +1,22 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import LoginPopup from './LoginPopup/LoginPopup';
+import VkContainer from './VkContainer/VkContainer';
 
-import { vkLogo, audioIcon } from '../../uikit/svgIcons';
+import { audioIcon } from '../../uikit/svgIcons';
 
 import styles from './Search.module.styl';
 
 export default class Search extends PureComponent {
   static propTypes = {
+    user: PropTypes.object.isRequired,
     listValue: PropTypes.string.isRequired,
     getAudio: PropTypes.func.isRequired,
+    setToken: PropTypes.func.isRequired
   };
 
   state = {
     value: '',
-    loginPopup: false,
     isTyping: false,
   };
 
@@ -43,13 +44,10 @@ export default class Search extends PureComponent {
     this.setState({ value: e.target.value });
   };
 
-
-  toggleLoginPopupState = () => {
-    this.setState({ loginPopup: !this.state.loginPopup });
-  };
-
   render() {
-    const { value, loginPopup } = this.state;
+    const { value, } = this.state;
+    const { user, setToken } = this.props;
+
     return (
       <div className={styles.container}>
         <div className={styles.search_type}>
@@ -61,13 +59,10 @@ export default class Search extends PureComponent {
           placeholder="Поиск по аудиозаписям"
           onChange={this.handleChange}
         />
-        <div className={styles.logo} onClick={this.toggleLoginPopupState}>
-          {vkLogo()}
-        </div>
-        {loginPopup &&
-        <LoginPopup
-          onClose={this.toggleLoginPopupState}
-        />}
+        <VkContainer
+          user={user}
+          setToken={setToken}
+        />
       </div>
     );
   }

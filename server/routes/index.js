@@ -1,5 +1,5 @@
-const audioRoutes = require('./audioRoutes');
+const mainRoutes = require('./mainRoutes');
 
 module.exports = function(app) {
-  audioRoutes(app);
+  mainRoutes(app);
 };

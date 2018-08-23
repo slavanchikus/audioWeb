@@ -22,6 +22,7 @@ export default class Controls extends Component {
 
   render() {
     const { isPlaying, onTogglePlay } = this.props;
+
     return (
       <div className={styles.container}>
         <div onClick={this.handlePrevClick}>{prevIcon()}</div>

@@ -63,6 +63,7 @@ export default class AudioContainer extends Component {
     const className = cx(styles.container, {
       [styles.playing]: active.id === item.id,
     });
+
     return (
       <div
         className={className}

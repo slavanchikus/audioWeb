@@ -29,6 +29,7 @@ export default class List extends PureComponent {
     const containerClassName = cx(styles.container, {
       [styles.fetching]: uiState.isFetchingList
     });
+
     return (
       <div className={containerClassName} onScroll={this.handleScroll} ref={node => (this.list = node)}>
         <div className={styles.content}>

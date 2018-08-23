@@ -117,6 +117,7 @@ export default class AudioPlayer extends PureComponent {
   render() {
     const { currentTime, volume, loop, random, loaded } = this.state;
     const { audio } = this.props;
+
     return (
       <div className={styles.container}>
         <audio

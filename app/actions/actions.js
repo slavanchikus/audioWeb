@@ -17,3 +17,14 @@ export const togglePlaying = () => ({
 export const setPage = () => ({
   type: 'SET_PAGE',
 });
+
+
+export const getUser = token => ({
+  type: 'GET_USER',
+  token,
+});
+
+export const setToken = token => ({
+  type: 'SET_TOKEN',
+  token
+});

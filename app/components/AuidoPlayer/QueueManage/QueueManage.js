@@ -31,6 +31,7 @@ export default class QueueManage extends Component {
     const randomClassName = cx(styles.item, {
       [styles.loop]: random,
     });
+
     return (
       <div className={styles.container}>
         <div onClick={this.handleRandomAudio} className={randomClassName}>{randomIcon()}</div>
