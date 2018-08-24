@@ -15,9 +15,10 @@ module.exports.parseSearchBidy = function parseSearchBody(body) {
       artist: artist || 'Без названия',
       title: title || 'Без названия',
       duration: el.attribs['data-duration'] / 1000,
-      listenUrl: `https://music.xn--41a.wiki${el.attribs['data-mp3']}`,
+      url: `https://music.xn--41a.wiki${el.attribs['data-mp3']}`,
       img,
-      imgCors: false
+      canPaleteImg: true,
+      is_licensed: true
     });
   });
   return {
@@ -38,9 +39,10 @@ module.exports.parseTopBody = function parseTopBody(body) {
       artist: artist || 'Без названия',
       title: title || 'Без названия',
       duration: el.attribs['data-duration'] / 1000,
-      listenUrl: `https://music.xn--41a.wiki${el.attribs['data-mp3']}`,
+      url: `https://music.xn--41a.wiki${el.attribs['data-mp3']}`,
       img,
-      imgCors: true
+      canPaleteImg: false,
+      is_licensed: true
     });
   });
   return {

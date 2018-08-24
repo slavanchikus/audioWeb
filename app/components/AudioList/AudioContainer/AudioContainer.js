@@ -42,8 +42,8 @@ export default class AudioContainer extends Component {
   };
 
   handleImgLoaded = () => {
-    const { item } = this.props;
-    if (!item.imgCors) {
+    const { canPaleteImg = false } = this.props.item;
+    if (canPaleteImg) {
       Vibrant.from(this.img.src).getPalette((err, palette) => {
         if (palette && palette.LightMuted) {
           const rgb = palette.LightMuted.getRgb();
@@ -62,7 +62,10 @@ export default class AudioContainer extends Component {
     const duration = this.handleDuration(item.duration);
     const className = cx(styles.container, {
       [styles.playing]: active.id === item.id,
+      [styles.disabled]: !item.is_licensed
     });
+
+    const audioImg = item.img || 'images/audio_icon.png';
 
     return (
       <div
@@ -85,7 +88,7 @@ export default class AudioContainer extends Component {
           <div className={styles.img}>
             <img
               ref={node => (this.img = node)}
-              src={item.img}
+              src={audioImg}
               width={40}
               height={40}
               alt="pic"
@@ -96,7 +99,7 @@ export default class AudioContainer extends Component {
         <div>{item.title}</div>
         <div>
           <span>{duration}</span>
-          <a href={item.listenUrl} target="_blank" onClick={this.handleDownloadClick}>
+          <a href={item.url} target="_blank" onClick={this.handleDownloadClick}>
             {downloadIcon()}
           </a>
         </div>

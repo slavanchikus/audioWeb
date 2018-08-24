@@ -12,7 +12,6 @@ export default class Search extends PureComponent {
     user: PropTypes.object.isRequired,
     listValue: PropTypes.string.isRequired,
     getAudio: PropTypes.func.isRequired,
-    setToken: PropTypes.func.isRequired
   };
 
   state = {
@@ -22,12 +21,12 @@ export default class Search extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.isTyping && !this.state.isTyping) {
-      const { listValue, getAudio } = this.props;
+      const { user, listValue, getAudio } = this.props;
       if (listValue.trim() !== this.state.value.trim()) {
         if (this.state.value.length === 0) {
-          getAudio('', 1);
+          getAudio('', 1, user.id, user.token);
         } else {
-          getAudio(this.state.value, 1);
+          getAudio(this.state.value, 1, user.id, user.token);
         }
       }
     }
@@ -46,7 +45,7 @@ export default class Search extends PureComponent {
 
   render() {
     const { value, } = this.state;
-    const { user, setToken } = this.props;
+    const { user } = this.props;
 
     return (
       <div className={styles.container}>
@@ -56,12 +55,11 @@ export default class Search extends PureComponent {
         <input
           type="text"
           value={value}
-          placeholder="Поиск по аудиозаписям"
+          placeholder="Введите название..."
           onChange={this.handleChange}
         />
         <VkContainer
           user={user}
-          setToken={setToken}
         />
       </div>
     );

@@ -9,8 +9,7 @@ import styles from './VkContainer.module.styl';
 
 export default class VkContainer extends Component {
   static propTypes = {
-    user: PropTypes.object.isRequired,
-    setToken: PropTypes.func.isRequired
+    user: PropTypes.object.isRequired
   };
 
   state = {
@@ -55,10 +54,9 @@ export default class VkContainer extends Component {
             this.setState({ isError: true, isFetching: false });
           } else {
             const token = response.substring(108).replace(/"/g, '');
-            localStorage.setItem('audioToken', token);
 
-            this.props.setToken(token);
-            this.setState({ showPopup: false });
+            localStorage.setItem('audioToken', token);
+            location.reload();
           }
         });
     }
@@ -66,7 +64,7 @@ export default class VkContainer extends Component {
 
   handleLogout = () => {
     localStorage.removeItem('audioToken');
-    this.props.setToken(null);
+    location.reload();
   };
 
   render() {

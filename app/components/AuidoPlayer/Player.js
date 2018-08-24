@@ -118,11 +118,13 @@ export default class AudioPlayer extends PureComponent {
     const { currentTime, volume, loop, random, loaded } = this.state;
     const { audio } = this.props;
 
+    const audioImg = audio.img || 'images/audio_icon.png';
+
     return (
       <div className={styles.container}>
         <audio
           ref={node => (this.audio = node)}
-          src={audio.audioUrl}
+          src={audio.url}
           autoPlay={audio.isPlaying}
           loop={loop}
         />
@@ -138,7 +140,7 @@ export default class AudioPlayer extends PureComponent {
           onMoveAudio={this.handleMoveAudio}
         />
         <img
-          src={audio.img}
+          src={audioImg}
           width={60}
           height={60}
           alt="pic"

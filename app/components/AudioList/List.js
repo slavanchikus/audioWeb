@@ -41,7 +41,7 @@ export default class List extends PureComponent {
               active={audio}
               onPickAudio={pickAudio}
             />)}
-          {!uiState.isFetchingList && list.items.length < 1 &&
+          {!uiState.isFetchingList && !uiState.isFetchingUser && list.items.length < 1 &&
           <div className={styles.empty}>Не найдено ни одной аудиозаписи</div>}
         </div>
         <div className={styles.loader_wrapper}>

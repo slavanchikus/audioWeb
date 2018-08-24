@@ -1,9 +1,9 @@
 import { fork, call, put, takeEvery } from 'redux-saga/effects';
 import { getAudio, listenAudio, getUser } from '../api/api';
 
-function* fetchAudio({ value, page }) {
+function* fetchAudio({ value, page, userId, token }) {
   try {
-    const payload = yield call(getAudio, value, page);
+    const payload = yield call(getAudio, value, page, userId, token);
     yield put({ type: 'GET_AUDIO_COMPLETE', payload });
   } catch (error) {
     yield put({ type: 'GET_AUDIO_FAILED' });
@@ -16,10 +16,14 @@ function* watchAudioRequest() {
 }
 
 
-function* fetchListen({ audio }) {
+function* fetchListen({ audio, getStreamUrl }) {
   try {
-    const payload = yield call(listenAudio, audio.listenUrl);
-    yield put({ type: 'PICK_AUDIO_COMPLETE', audio: { ...audio, audioUrl: payload.audioUrl }});
+    if (getStreamUrl) {
+      const payload = yield call(listenAudio, audio.url);
+      yield put({ type: 'PICK_AUDIO_COMPLETE', audio: { ...audio, url: payload.url }});
+    } else {
+      yield put({ type: 'PICK_AUDIO_COMPLETE', audio });
+    }
   } catch (error) {
     yield put({ type: 'PICK_AUDIO_FAILED' });
     throw error;
@@ -34,7 +38,14 @@ function* watchListenRequest() {
 function* fetchUser({ token }) {
   try {
     const payload = yield call(getUser, token);
-    yield put({ type: 'GET_USER_COMPLETE', user: payload.response });
+    if (payload.response.error) {
+      localStorage.removeItem('audioToken');
+      location.reload();
+    } else {
+      yield put({ type: 'GET_USER_COMPLETE', user: payload.response });
+
+      yield put({ type: 'GET_AUDIO', value: '', page: 1, userId: payload.response.id, token });
+    }
   } catch (error) {
     yield put({ type: 'GET_USER_ERROR' });
     throw error;

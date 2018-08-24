@@ -19,12 +19,12 @@ export const getUser = token => fetch(`${host}/getuser`, {
     throw error;
   });
 
-export const getAudio = (value, page) => fetch(`${host}/getaudio`, {
+export const getAudio = (value, page, userId, token) => fetch(`${host}/getaudio`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
   },
-  body: JSON.stringify({ value, page }),
+  body: JSON.stringify({ value, page, userId, token }),
   credentials: 'include'
 }).then(response => response.json())
   .catch((error) => {
@@ -32,12 +32,12 @@ export const getAudio = (value, page) => fetch(`${host}/getaudio`, {
   });
 
 
-export const listenAudio = listenUrl => fetch(`${host}/listenaudio`, {
+export const listenAudio = url => fetch(`${host}/listenaudio`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
   },
-  body: JSON.stringify({ listenUrl }),
+  body: JSON.stringify({ url }),
   credentials: 'include'
 }).then(response => response.json())
   .catch((error) => {
