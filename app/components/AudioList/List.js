@@ -9,6 +9,7 @@ import styles from './List.module.styl';
 
 export default class List extends PureComponent {
   static propTypes = {
+    user: PropTypes.object.isRequired,
     audio: PropTypes.object.isRequired,
     list: PropTypes.object.isRequired,
     uiState: PropTypes.object.isRequired,
@@ -25,7 +26,7 @@ export default class List extends PureComponent {
   };
 
   render() {
-    const { audio, list, uiState, pickAudio } = this.props;
+    const { user, audio, list, uiState, pickAudio } = this.props;
     const containerClassName = cx(styles.container, {
       [styles.fetching]: uiState.isFetchingList
     });
@@ -37,6 +38,7 @@ export default class List extends PureComponent {
           list.items.map((item, i) =>
             <AudioContainer
               key={`${item.id}++${i}`}
+              user={user}
               item={item}
               active={audio}
               onPickAudio={pickAudio}

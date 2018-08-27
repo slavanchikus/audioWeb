@@ -43,3 +43,15 @@ export const listenAudio = url => fetch(`${host}/listenaudio`, {
   .catch((error) => {
     throw error;
   });
+
+export const manageAudio = (audioId, ownerId, userId, token) => fetch(`${host}/manageaudio`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ audioId, ownerId, userId, token }),
+  credentials: 'include'
+}).then(response => response.json())
+  .catch((error) => {
+    throw error;
+  });

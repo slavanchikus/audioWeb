@@ -31,21 +31,31 @@
     &:nth-child(4)
       width: 12%
       text-align: right
-      >a
-        width: 20px
-        height: 20px
-        padding: 8px
-        margin-left: auto
-        display: none
-        >svg
-          pointer-events: none
+      user-select: none
   &:hover
     >div
       &:nth-child(4)
-        >a
-          display: block
-        >span
+        .tools
+          display: flex
+        .duration
           display: none
+
+.tools
+  display: none
+  align-items: center
+  justify-content: flex-end
+  margin-left: auto
+  >a
+    height: 20px
+  svg
+    width: 16px
+    height: 16px
+    pointer-events: none
+  >span
+    height: 20px
+    margin-right: 13px
+    font-size: 30px
+    line-height: 16px
 
 .animation
   width: 18px
@@ -78,6 +88,9 @@
   pointer-events: none
   user-select: none
 
+.deleted
+  display: none
+
 .active
   padding-left: 10px
   box-sizing: border-box
@@ -104,6 +117,10 @@
       &:nth-child(4)
         font-size: 11px
         align-self: flex-end
-
-  .playing
-    border-color: #ffa95e
+    &:hover
+      >div
+        &:nth-child(4)
+          .tools
+            display: none
+          .duration
+            display: block

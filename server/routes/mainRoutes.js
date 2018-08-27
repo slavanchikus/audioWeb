@@ -16,7 +16,7 @@ module.exports = function(app) {
       }
 
       const params = {
-        url,
+        url: encodeURI(url),
         method: 'GET',
         headers: {
           'user-agent': 'KateMobileAndroid/48.2 lite-433 (Android 7.0; SDK 24; arm64-v8a; samsung SM-G930F; ru)'
@@ -32,8 +32,8 @@ module.exports = function(app) {
     } else {
       let url;
       if (value !== '') {
-        url = `https://music.xn--41a.wiki/search/${value}/`;
         if (page === 1) {
+          url = `https://music.xn--41a.wiki/search/${value}/`;
         } else {
           url = `https://music.xn--41a.wiki/search/${value}/${page}/`;
         }
@@ -55,6 +55,30 @@ module.exports = function(app) {
         }
       });
     }
+  });
+
+  app.post('/manageaudio', (mainReq, mainRes) => {
+    const { audioId, ownerId, userId, token } = mainReq.body;
+    let url;
+
+    if (ownerId === userId) {
+      url = `https://api.vk.com/method/audio.delete?access_token=${token}&audio_id=${audioId}&owner_id=${ownerId}&v=5.71`;
+    } else {
+      url = `https://api.vk.com/method/audio.add?access_token=${token}&audio_id=${audioId}&owner_id=${ownerId}&v=5.71`;
+    }
+
+    const params = {
+      url: encodeURI(url),
+      method: 'GET',
+      headers: {
+        'user-agent': 'KateMobileAndroid/48.2 lite-433 (Android 7.0; SDK 24; arm64-v8a; samsung SM-G930F; ru)'
+      }
+    };
+    request(params, (err, res, body) => {
+      if (body) {
+        mainRes.send({ ownerId, userId });
+      }
+    });
   });
 
   app.post('/listenaudio', (mainReq, mainRes) => {

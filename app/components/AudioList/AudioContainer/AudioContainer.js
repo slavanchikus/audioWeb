@@ -5,20 +5,29 @@ import Vibrant from 'node-vibrant';
 
 import cx from 'classnames';
 
-import { playIcon, downloadIcon } from '../../../uikit/svgIcons';
+import { manageAudio } from '../../../api/api';
+import { playIcon, downloadIcon, successIcon } from '../../../uikit/svgIcons';
 
 import styles from './AudioContainer.module.styl';
 
 export default class AudioContainer extends Component {
   static propTypes = {
     item: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
     active: PropTypes.object.isRequired,
     onPickAudio: PropTypes.func.isRequired,
   };
 
-  shouldComponentUpdate(nextProps) {
+  state = {
+    isAdded: false,
+    isDeleted: false,
+    isManageFetching: false
+  };
+
+  shouldComponentUpdate(nextProps, nextState) {
     return (nextProps.active.id === this.props.item.id)
-      || (this.props.active.id !== nextProps.active.id && this.props.active.id === this.props.item.id);
+      || (this.props.active.id !== nextProps.active.id && this.props.active.id === this.props.item.id)
+      || (this.state !== nextState);
   }
 
   handleContainerClick = () => {
@@ -28,6 +37,28 @@ export default class AudioContainer extends Component {
 
   handleDownloadClick = (e) => {
     e.stopPropagation();
+  };
+
+  handleManageAudio = (e) => {
+    e.stopPropagation();
+
+    this.setState({ isManageFetching: true });
+
+    const { isManageFetching } = this.state;
+    const { item, user } = this.props;
+
+    if (!isManageFetching) {
+      manageAudio(item.id, item.owner_id, user.id, user.token)
+        .then((resposne) => {
+          const { ownerId, userId } = resposne;
+          if (ownerId === userId) {
+            this.setState({ isDeleted: true });
+          } else {
+            this.setState({ isAdded: true });
+          }
+          this.setState({ isManageFetching: false });
+        });
+    }
   };
 
   handleDuration = (duration) => {
@@ -58,11 +89,13 @@ export default class AudioContainer extends Component {
   };
 
   render() {
-    const { item, active } = this.props;
+    const { isAdded, isDeleted } = this.state;
+    const { item, user, active } = this.props;
     const duration = this.handleDuration(item.duration);
     const className = cx(styles.container, {
       [styles.playing]: active.id === item.id,
-      [styles.disabled]: !item.is_licensed
+      [styles.disabled]: !item.is_licensed,
+      [styles.deleted]: isDeleted
     });
 
     const audioImg = item.img || 'images/audio_icon.png';
@@ -98,10 +131,21 @@ export default class AudioContainer extends Component {
         <div>{item.artist}</div>
         <div>{item.title}</div>
         <div>
-          <span>{duration}</span>
-          <a href={item.url} target="_blank" onClick={this.handleDownloadClick}>
-            {downloadIcon()}
-          </a>
+          <div className={styles.duration}>{duration}</div>
+          <div className={styles.tools}>
+            {user.id &&
+            <span onClick={this.handleManageAudio}>
+              {user.id !== item.owner_id ?
+                <span>
+                  {isAdded ? successIcon() : '+'}
+                </span>
+                :
+                '×'}
+            </span>}
+            <a href={item.url} target="_blank" onClick={this.handleDownloadClick}>
+              {downloadIcon()}
+            </a>
+          </div>
         </div>
       </div>
     );

@@ -65,6 +65,7 @@ class MainContainer extends Component {
           getAudio={this.props.getAudio}
         />
         <AudioList
+          user={user}
           audio={audio}
           list={list}
           uiState={uiState}

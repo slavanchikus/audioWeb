@@ -1,6 +1,7 @@
 const initialState = {
   isFetchingList: false,
-  isFetchingAudio: false
+  isFetchingAudio: false,
+  isFetchingUser: false
 };
 
 export default function uiStateReducer(state = initialState, action) {
