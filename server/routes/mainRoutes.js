@@ -58,10 +58,12 @@ module.exports = function(app) {
   });
 
   app.post('/manageaudio', (mainReq, mainRes) => {
-    const { audioId, ownerId, userId, token } = mainReq.body;
+    const { audioId, ownerId, isDeleted, userId, token } = mainReq.body;
     let url;
 
-    if (ownerId === userId) {
+    if (isDeleted) {
+      url = `https://api.vk.com/method/audio.restore?access_token=${token}&audio_id=${audioId}&owner_id=${ownerId}&v=5.71`;
+    } else if (ownerId === userId) {
       url = `https://api.vk.com/method/audio.delete?access_token=${token}&audio_id=${audioId}&owner_id=${ownerId}&v=5.71`;
     } else {
       url = `https://api.vk.com/method/audio.add?access_token=${token}&audio_id=${audioId}&owner_id=${ownerId}&v=5.71`;

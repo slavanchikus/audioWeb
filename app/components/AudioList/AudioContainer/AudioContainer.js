@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import Vibrant from 'node-vibrant';
@@ -32,7 +32,10 @@ export default class AudioContainer extends Component {
 
   handleContainerClick = () => {
     const { item, onPickAudio } = this.props;
-    onPickAudio(item);
+
+    if (item.is_licensed) {
+      onPickAudio(item);
+    }
   };
 
   handleDownloadClick = (e) => {
@@ -44,14 +47,16 @@ export default class AudioContainer extends Component {
 
     this.setState({ isManageFetching: true });
 
-    const { isManageFetching } = this.state;
+    const { isDeleted, isManageFetching } = this.state;
     const { item, user } = this.props;
 
     if (!isManageFetching) {
-      manageAudio(item.id, item.owner_id, user.id, user.token)
+      manageAudio(item.id, item.owner_id, isDeleted, user.id, user.token)
         .then((resposne) => {
           const { ownerId, userId } = resposne;
-          if (ownerId === userId) {
+          if (isDeleted) {
+            this.setState({ isDeleted: false });
+          } else if (ownerId === userId) {
             this.setState({ isDeleted: true });
           } else {
             this.setState({ isAdded: true });
@@ -93,9 +98,9 @@ export default class AudioContainer extends Component {
     const { item, user, active } = this.props;
     const duration = this.handleDuration(item.duration);
     const className = cx(styles.container, {
+      [styles.authorized]: user.id,
       [styles.playing]: active.id === item.id,
-      [styles.disabled]: !item.is_licensed,
-      [styles.deleted]: isDeleted
+      [styles.disabled]: !item.is_licensed || isDeleted,
     });
 
     const audioImg = item.img || 'images/audio_icon.png';
@@ -134,17 +139,22 @@ export default class AudioContainer extends Component {
           <div className={styles.duration}>{duration}</div>
           <div className={styles.tools}>
             {user.id &&
-            <span onClick={this.handleManageAudio}>
-              {user.id !== item.owner_id ?
-                <span>
-                  {isAdded ? successIcon() : '+'}
-                </span>
-                :
-                '×'}
-            </span>}
-            <a href={item.url} target="_blank" onClick={this.handleDownloadClick}>
-              {downloadIcon()}
-            </a>
+            <Fragment>
+              <span onClick={this.handleManageAudio}>
+                {user.id !== item.owner_id ?
+                  <span>
+                    {isAdded ? successIcon() : '+'}
+                  </span>
+                  :
+                  <span>
+                    {isDeleted ? '+' : '×'}
+                  </span>}
+              </span>
+              {item.is_licensed &&
+              <a href={item.url} target="_blank" onClick={this.handleDownloadClick}>
+                {downloadIcon()}
+              </a>}
+            </Fragment>}
           </div>
         </div>
       </div>
