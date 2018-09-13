@@ -1,12 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { searchIcon, audioIcon } from '../../uikit/svgIcons';
+import VkContainer from './VkContainer/VkContainer';
+
+import { audioIcon } from '../../uikit/svgIcons';
 
 import styles from './Search.module.styl';
 
 export default class Search extends PureComponent {
   static propTypes = {
+    user: PropTypes.object.isRequired,
     listValue: PropTypes.string.isRequired,
     getAudio: PropTypes.func.isRequired,
   };
@@ -18,12 +21,12 @@ export default class Search extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.isTyping && !this.state.isTyping) {
-      const { listValue, getAudio } = this.props;
+      const { user, listValue, getAudio } = this.props;
       if (listValue.trim() !== this.state.value.trim()) {
         if (this.state.value.length === 0) {
-          getAudio('', 1);
+          getAudio('', 1, user.id, user.token);
         } else {
-          getAudio(this.state.value, 1);
+          getAudio(this.state.value, 1, user.id, user.token);
         }
       }
     }
@@ -40,16 +43,10 @@ export default class Search extends PureComponent {
     this.setState({ value: e.target.value });
   };
 
-  handleSearchClick = () => {
-    const { value } = this.state;
-    const { listValue, getAudio } = this.props;
-    if (value.trim() !== listValue.trim()) {
-      getAudio(this.state.value, 0);
-    }
-  };
-
   render() {
-    const { value } = this.state;
+    const { value, } = this.state;
+    const { user } = this.props;
+
     return (
       <div className={styles.container}>
         <div className={styles.search_type}>
@@ -58,12 +55,12 @@ export default class Search extends PureComponent {
         <input
           type="text"
           value={value}
-          placeholder="Поиск по аудиозаписям"
+          placeholder="Введите название..."
           onChange={this.handleChange}
         />
-        <div className={styles.search} onClick={this.handleSearchClick}>
-          {searchIcon()}
-        </div>
+        <VkContainer
+          user={user}
+        />
       </div>
     );
   }

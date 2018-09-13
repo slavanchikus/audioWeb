@@ -8,11 +8,11 @@ import Volume from './Volume/Volume';
 
 import styles from './Player.module.styl';
 
-export default class Player extends PureComponent {
+export default class AudioPlayer extends PureComponent {
   static propTypes = {
     audio: PropTypes.object.isRequired,
     queue: PropTypes.array.isRequired,
-    isFetchingAudio: PropTypes.object.isRequired,
+    isFetchingAudio: PropTypes.bool.isRequired,
     togglePlaying: PropTypes.func.isRequired,
     pickAudio: PropTypes.func.isRequired
   };
@@ -117,11 +117,14 @@ export default class Player extends PureComponent {
   render() {
     const { currentTime, volume, loop, random, loaded } = this.state;
     const { audio } = this.props;
+
+    const audioImg = audio.img || 'images/audio_icon.png';
+
     return (
       <div className={styles.container}>
         <audio
           ref={node => (this.audio = node)}
-          src={audio.audioUrl}
+          src={audio.url}
           autoPlay={audio.isPlaying}
           loop={loop}
         />
@@ -137,7 +140,7 @@ export default class Player extends PureComponent {
           onMoveAudio={this.handleMoveAudio}
         />
         <img
-          src={audio.img}
+          src={audioImg}
           width={60}
           height={60}
           alt="pic"

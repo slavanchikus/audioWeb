@@ -1,36 +1,69 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import Vibrant from 'node-vibrant';
 
 import cx from 'classnames';
 
-import { playIcon, downloadIcon } from '../../../uikit/svgIcons';
+import { manageAudio } from '../../../api/api';
+import { playIcon, downloadIcon, successIcon } from '../../../uikit/svgIcons';
 
 import styles from './AudioContainer.module.styl';
 
 export default class AudioContainer extends Component {
   static propTypes = {
     item: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
     active: PropTypes.object.isRequired,
     onPickAudio: PropTypes.func.isRequired,
-    onDownloadAudio: PropTypes.func.isRequired
   };
 
-  shouldComponentUpdate(nextProps) {
+  state = {
+    isAdded: false,
+    isDeleted: false,
+    isManageFetching: false
+  };
+
+  shouldComponentUpdate(nextProps, nextState) {
     return (nextProps.active.id === this.props.item.id)
-      || (this.props.active.id !== nextProps.active.id && this.props.active.id === this.props.item.id);
+      || (this.props.active.id !== nextProps.active.id && this.props.active.id === this.props.item.id)
+      || (this.state !== nextState);
   }
 
   handleContainerClick = () => {
     const { item, onPickAudio } = this.props;
-    onPickAudio(item);
+
+    if (item.is_licensed) {
+      onPickAudio(item);
+    }
   };
 
   handleDownloadClick = (e) => {
     e.stopPropagation();
-    const { item, onDownloadAudio } = this.props;
-    onDownloadAudio(item);
+  };
+
+  handleManageAudio = (e) => {
+    e.stopPropagation();
+
+    this.setState({ isManageFetching: true });
+
+    const { isDeleted, isManageFetching } = this.state;
+    const { item, user } = this.props;
+
+    if (!isManageFetching) {
+      manageAudio(item.id, item.owner_id, isDeleted, user.id, user.token)
+        .then((resposne) => {
+          const { ownerId, userId } = resposne;
+          if (isDeleted) {
+            this.setState({ isDeleted: false });
+          } else if (ownerId === userId) {
+            this.setState({ isDeleted: true });
+          } else {
+            this.setState({ isAdded: true });
+          }
+          this.setState({ isManageFetching: false });
+        });
+    }
   };
 
   handleDuration = (duration) => {
@@ -39,14 +72,14 @@ export default class AudioContainer extends Component {
     const minutes = Math.floor(secNum / 60) % 60;
     const seconds = secNum % 60;
     return [hours, minutes, seconds]
-        .map(v => v < 10 ? `0${v}` : v)
-        .filter((v, i) => v !== '00' || i > 0)
-        .join(':');
+      .map(v => (v < 10 ? `0${v}` : v))
+      .filter((v, i) => v !== '00' || i > 0)
+      .join(':');
   };
 
   handleImgLoaded = () => {
-    const { item } = this.props;
-    if (!item.imgCors) {
+    const { canPaleteImg = false } = this.props.item;
+    if (canPaleteImg) {
       Vibrant.from(this.img.src).getPalette((err, palette) => {
         if (palette && palette.LightMuted) {
           const rgb = palette.LightMuted.getRgb();
@@ -61,11 +94,17 @@ export default class AudioContainer extends Component {
   };
 
   render() {
-    const { item, active } = this.props;
+    const { isAdded, isDeleted } = this.state;
+    const { item, user, active } = this.props;
     const duration = this.handleDuration(item.duration);
     const className = cx(styles.container, {
+      [styles.authorized]: user.id,
       [styles.playing]: active.id === item.id,
+      [styles.disabled]: !item.is_licensed || isDeleted,
     });
+
+    const audioImg = item.img || 'images/audio_icon.png';
+
     return (
       <div
         className={className}
@@ -87,7 +126,7 @@ export default class AudioContainer extends Component {
           <div className={styles.img}>
             <img
               ref={node => (this.img = node)}
-              src={item.img}
+              src={audioImg}
               width={40}
               height={40}
               alt="pic"
@@ -97,9 +136,25 @@ export default class AudioContainer extends Component {
         <div>{item.artist}</div>
         <div>{item.title}</div>
         <div>
-          <span>{duration}</span>
-          <div onClick={this.handleDownloadClick}>
-            {downloadIcon()}
+          <div className={styles.duration}>{duration}</div>
+          <div className={styles.tools}>
+            {user.id &&
+            <Fragment>
+              <span onClick={this.handleManageAudio}>
+                {user.id !== item.owner_id ?
+                  <span>
+                    {isAdded ? successIcon() : '+'}
+                  </span>
+                  :
+                  <span>
+                    {isDeleted ? '+' : '×'}
+                  </span>}
+              </span>
+              {item.is_licensed &&
+              <a href={item.url} target="_blank" onClick={this.handleDownloadClick}>
+                {downloadIcon()}
+              </a>}
+            </Fragment>}
           </div>
         </div>
       </div>

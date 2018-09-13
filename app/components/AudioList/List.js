@@ -9,12 +9,12 @@ import styles from './List.module.styl';
 
 export default class List extends PureComponent {
   static propTypes = {
+    user: PropTypes.object.isRequired,
     audio: PropTypes.object.isRequired,
     list: PropTypes.object.isRequired,
     uiState: PropTypes.object.isRequired,
     setPage: PropTypes.func.isRequired,
     pickAudio: PropTypes.func.isRequired,
-    downloadAudio: PropTypes.func.isRequired
   };
 
   handleScroll = () => {
@@ -26,10 +26,11 @@ export default class List extends PureComponent {
   };
 
   render() {
-    const { audio, list, uiState, pickAudio, downloadAudio } = this.props;
+    const { user, audio, list, uiState, pickAudio } = this.props;
     const containerClassName = cx(styles.container, {
       [styles.fetching]: uiState.isFetchingList
     });
+
     return (
       <div className={containerClassName} onScroll={this.handleScroll} ref={node => (this.list = node)}>
         <div className={styles.content}>
@@ -37,12 +38,12 @@ export default class List extends PureComponent {
           list.items.map((item, i) =>
             <AudioContainer
               key={`${item.id}++${i}`}
+              user={user}
               item={item}
               active={audio}
               onPickAudio={pickAudio}
-              onDownloadAudio={downloadAudio}
             />)}
-          {!uiState.isFetchingList && list.items.length < 1 &&
+          {!uiState.isFetchingList && !uiState.isFetchingUser && list.items.length < 1 &&
           <div className={styles.empty}>Не найдено ни одной аудиозаписи</div>}
         </div>
         <div className={styles.loader_wrapper}>

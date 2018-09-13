@@ -1,18 +1,21 @@
-export const getAudio = (value, page) => ({
+export const getAudio = (value, page, userId, token) => ({
   type: 'GET_AUDIO',
   value,
   page,
+  userId,
+  token
 });
 
-export const pickAudio = (audio, queue) => ({
+export const pickAudio = (audio, queue, getStreamUrl) => ({
   type: 'PICK_AUDIO',
   audio,
-  queue
+  queue,
+  getStreamUrl
 });
 
-export const downloadAudio = (audio) => ({
-  type: 'DOWNLOAD_AUDIO',
-  audio,
+export const getUser = token => ({
+  type: 'GET_USER',
+  token,
 });
 
 export const togglePlaying = () => ({

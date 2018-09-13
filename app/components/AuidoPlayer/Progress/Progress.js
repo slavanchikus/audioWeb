@@ -35,6 +35,7 @@ export default class Progress extends Component {
     const containerClassName = cx(styles.container, {
       [styles.loading]: !loaded
     });
+
     return (
       <div
         ref={node => (this.timeline = node)}

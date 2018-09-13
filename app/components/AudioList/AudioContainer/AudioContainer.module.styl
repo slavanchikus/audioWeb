@@ -31,21 +31,24 @@
     &:nth-child(4)
       width: 12%
       text-align: right
-      >div
-        width: 20px
-        height: 20px
-        padding: 8px
-        margin-left: auto
-        display: none
-        >svg
-          pointer-events: none
-  &:hover
-    >div
-      &:nth-child(4)
-        >div
-          display: block
-        >span
-          display: none
+      user-select: none
+
+.tools
+  display: none
+  align-items: center
+  justify-content: flex-end
+  margin-left: auto
+  >a
+    height: 20px
+  svg
+    width: 16px
+    height: 16px
+    pointer-events: none
+  >span
+    height: 20px
+    margin-right: 13px
+    font-size: 30px
+    line-height: 16px
 
 .animation
   width: 18px
@@ -73,9 +76,23 @@
 .playing
   border-color: #f66
 
+.disabled
+  opacity: 0.2
+  &:hover
+    border-color: white
+
 .active
   padding-left: 10px
   box-sizing: border-box
+
+.authorized
+  &:hover
+    >div
+      &:nth-child(4)
+        .tools
+          display: flex
+        .duration
+          display: none
 
 @keyframes circleScale
   0%
@@ -85,20 +102,35 @@
   100%
     transform: scale(0)
 
-@media (max-width: 500px)
+@media (max-width: 700px)
   .container
     flex-wrap: wrap
     >div
       &:nth-child(1)
         display: none
       &:nth-child(2)
-        width: 88%
+        width: 83%
       &:nth-child(3)
-        width: 88%
+        width: 83%
         margin-top: 3px
       &:nth-child(4)
+        width: 17%
         font-size: 11px
         align-self: flex-end
 
   .playing
-    border-color: #ffa95e
+    >div
+      &:nth-child(4)
+        .tools
+          display: flex
+        .duration
+          display: none
+
+  .authorized
+    &:hover
+      >div
+        &:nth-child(4)
+          .tools
+            display: flex
+          .duration
+            display: none

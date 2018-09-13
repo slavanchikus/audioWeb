@@ -46,6 +46,7 @@ export default class Volume extends Component {
   render() {
     const { showStick } = this.state;
     const { volume } = this.props;
+
     return (
       <div className={styles.container}>
         <div
