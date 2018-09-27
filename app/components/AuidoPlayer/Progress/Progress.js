@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import cx from 'classnames';
 
+import transformTime from '../../../utils/transformTime';
+
 import styles from './Progress.module.styl';
 
 export default class Progress extends Component {
@@ -13,21 +15,10 @@ export default class Progress extends Component {
     onRewindTime: PropTypes.func.isRequired
   };
 
-  handleClick= (e) => {
+  clickTimeline = (e) => {
     this.props.onRewindTime(
       ((e.clientX - this.timeline.getBoundingClientRect().left) / this.timeline.getBoundingClientRect().width) * this.props.duration
     );
-  };
-
-  handleTransformTime = (duration) => {
-    const secNum = parseInt(duration, 10);
-    const hours = Math.floor(secNum / 3600) % 24;
-    const minutes = Math.floor(secNum / 60) % 60;
-    const seconds = secNum % 60;
-    return [hours, minutes, seconds]
-      .map(v => v < 10 ? `0${v}` : v)
-      .filter((v, i) => v !== '00' || i > 0)
-      .join(':');
   };
 
   render() {
@@ -40,13 +31,13 @@ export default class Progress extends Component {
       <div
         ref={node => (this.timeline = node)}
         className={containerClassName}
-        onClick={this.handleClick}
+        onClick={this.clickTimeline}
       >
         <div className={styles.played}>
-          {this.handleTransformTime(currentTime)}
+          {transformTime(currentTime)}
         </div>
         <div className={styles.duration}>
-          {this.handleTransformTime(duration)}
+          {transformTime(duration)}
         </div>
         {loaded &&
         <div

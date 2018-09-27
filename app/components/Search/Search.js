@@ -32,7 +32,7 @@ export default class Search extends PureComponent {
     }
   }
 
-  handleChange = (e) => {
+  changeInput = (e) => {
     if (!this.state.isTyping) {
       this.setState({ isTyping: true });
     }
@@ -56,7 +56,7 @@ export default class Search extends PureComponent {
           type="text"
           value={value}
           placeholder="Введите название..."
-          onChange={this.handleChange}
+          onChange={this.changeInput}
         />
         <VkContainer
           user={user}

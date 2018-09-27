@@ -22,21 +22,21 @@ export default class VkContainer extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (!prevState.showPopup && this.state.showPopup) {
-      document.addEventListener('click', this.handleClickOutside);
+      document.addEventListener('click', this.clickOutside);
     } else if (prevState.showPopup && !this.state.showPopup) {
-      document.removeEventListener('click', this.handleClickOutside);
+      document.removeEventListener('click', this.clickOutside);
     }
   }
 
-  handleLoginChange = (e) => {
+  changeLogin = (e) => {
     this.setState({ login: e.target.value });
   };
 
-  handlePasswordChange = (e) => {
+  changePassword = (e) => {
     this.setState({ password: e.target.value });
   };
 
-  handleClickOutside = (e) => {
+  clickOutside = (e) => {
     if (!this.container.contains(e.target)) {
       this.setState({ showPopup: false });
     }
@@ -89,13 +89,13 @@ export default class VkContainer extends Component {
               type="text"
               value={login}
               placeholder="Логин"
-              onChange={this.handleLoginChange}
+              onChange={this.changeLogin}
             />
             <input
               type="password"
               value={password}
               placeholder="Пароль"
-              onChange={this.handlePasswordChange}
+              onChange={this.changePassword}
             />
             <button className={styles.button} onClick={this.handleAuth} disabled={isFetching}>
               Войти

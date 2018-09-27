@@ -17,7 +17,7 @@ export default class List extends PureComponent {
     pickAudio: PropTypes.func.isRequired,
   };
 
-  handleScroll = () => {
+  scrollList = () => {
     const { list, setPage, uiState } = this.props;
     if (list.hasNextPage && !uiState.isFetchingList &&
       this.list.scrollHeight - this.list.scrollTop === this.list.clientHeight) {
@@ -32,7 +32,7 @@ export default class List extends PureComponent {
     });
 
     return (
-      <div className={containerClassName} onScroll={this.handleScroll} ref={node => (this.list = node)}>
+      <div className={containerClassName} onScroll={this.scrollList} ref={node => (this.list = node)}>
         <div className={styles.content}>
           {list.items.length > 0 &&
           list.items.map((item, i) =>

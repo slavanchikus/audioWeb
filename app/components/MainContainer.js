@@ -3,12 +3,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { audioSelector, queueSelector, listSelector, userSelector, uiStateSelector } from '../../selector/mainSelector';
-import { getAudio, pickAudio, togglePlaying, setPage, getUser } from '../../actions/actions';
+import { audioSelector, queueSelector, listSelector, userSelector, uiStateSelector } from '../selector/mainSelector';
+import { getAudio, pickAudio, togglePlaying, setPage, getUser } from '../actions/actions';
 
-import AudioList from '../AudioList/List';
-import AudioPlayer from '../AuidoPlayer/Player';
-import Search from '../Search/Search';
+import AudioList from './AudioList/List';
+import AudioPlayer from './AuidoPlayer/Player';
+import Search from './Search/Search';
 
 import styles from './MainContainer.module.styl';
 
@@ -41,7 +41,7 @@ class MainContainer extends Component {
     }
   }
 
-  handleAudioContainerClick = (clickedAudio) => {
+  pickAudio = (clickedAudio) => {
     const { audio, queue, list, user } = this.props;
 
     const currQueue = queue.find(i => i.id === clickedAudio.id) ? null : list.items;
@@ -70,10 +70,11 @@ class MainContainer extends Component {
           list={list}
           uiState={uiState}
           setPage={this.props.setPage}
-          pickAudio={this.handleAudioContainerClick}
+          pickAudio={this.pickAudio}
         />
         {audio.id && queue.length > 0 &&
         <AudioPlayer
+          user={user}
           audio={audio}
           queue={queue}
           isFetchingAudio={uiState.isFetchingAudio}

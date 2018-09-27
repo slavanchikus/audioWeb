@@ -19,12 +19,12 @@ export default class Volume extends Component {
     showStick: false
   };
 
-  handleIconClick = () => {
+  clickIcon = () => {
     this.setState({ showStick: !this.state.showStick });
   };
 
-  handleClick= (e) => {
-    let val = Math.abs((e.clientY - this.progress.getBoundingClientRect().bottom) / this.progress.getBoundingClientRect().height);
+  clickVolume = (e) => {
+    let val = Math.abs((e.clientY - this.vol.getBoundingClientRect().bottom) / this.vol.getBoundingClientRect().height);
     if (val > 1) val = 1;
     this.props.onPickVolume(val);
   };
@@ -50,7 +50,7 @@ export default class Volume extends Component {
     return (
       <div className={styles.container}>
         <div
-          onClick={this.handleIconClick}
+          onClick={this.clickIcon}
           onMouseEnter={this.handleMouseEnter}
           onMouseLeave={this.handleMouseLeave}
         >
@@ -62,7 +62,7 @@ export default class Volume extends Component {
           onMouseEnter={this.handleMouseEnter}
           onMouseLeave={this.handleMouseLeave}
         >
-          <div ref={node => (this.progress = node)} onClick={this.handleClick}>
+          <div ref={node => (this.vol = node)} onClick={this.clickVolume}>
             <div className={styles.button} style={{ height: `${volume * 100}%` }} />
           </div>
         </div>}

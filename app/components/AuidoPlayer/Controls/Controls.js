@@ -12,11 +12,11 @@ export default class Controls extends Component {
     onMoveAudio: PropTypes.func.isRequired
   };
 
-  handlePrevClick = () => {
+  clickPrev = () => {
     this.props.onMoveAudio('prev');
   };
 
-  handleNextClick = () => {
+  clickNext = () => {
     this.props.onMoveAudio('next');
   };
 
@@ -25,11 +25,11 @@ export default class Controls extends Component {
 
     return (
       <div className={styles.container}>
-        <div onClick={this.handlePrevClick}>{prevIcon()}</div>
+        <div onClick={this.clickPrev}>{prevIcon()}</div>
         <div onClick={onTogglePlay}>
           {!isPlaying ? playIcon() : pauseIcon()}
         </div>
-        <div onClick={this.handleNextClick}>{nextIcon()}</div>
+        <div onClick={this.clickNext}>{nextIcon()}</div>
       </div>
     );
   }

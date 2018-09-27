@@ -10,6 +10,7 @@ import styles from './Player.module.styl';
 
 export default class AudioPlayer extends PureComponent {
   static propTypes = {
+    user: PropTypes.object.isRequired,
     audio: PropTypes.object.isRequired,
     queue: PropTypes.array.isRequired,
     isFetchingAudio: PropTypes.bool.isRequired,
@@ -79,20 +80,20 @@ export default class AudioPlayer extends PureComponent {
     this.setState({ currentTime: this.audio.currentTime });
   };
 
-  handleRewindTime = (newTime) => {
+  rewindTime = (newTime) => {
     this.audio.currentTime = newTime;
   };
 
-  handleVolume = (val) => {
+  pickVolume = (val) => {
     this.setState({ volume: val });
     this.audio.volume = val;
   };
 
-  handleLoopAudio = () => {
+  loopAudio = () => {
     this.setState({ loop: !this.state.loop });
   };
 
-  handleRandomAudio = () => {
+  randomAudio = () => {
     if (!this.state.random) {
       const newPlayerQueue = [...this.state.playerQueue];
       this.setState({ random: true, playerQueue: newPlayerQueue.sort(() => Math.random() - 0.5) });
@@ -101,7 +102,7 @@ export default class AudioPlayer extends PureComponent {
     }
   };
 
-  handleMoveAudio = (direction) => {
+  moveAudio = (direction) => {
     const { playerQueue } = this.state;
     const { audio } = this.props;
     const currAudio = playerQueue.findIndex(i => i.id === audio.id);
@@ -116,7 +117,7 @@ export default class AudioPlayer extends PureComponent {
 
   render() {
     const { currentTime, volume, loop, random, loaded } = this.state;
-    const { audio } = this.props;
+    const { user, audio } = this.props;
 
     const audioImg = audio.img || 'images/audio_icon.png';
 
@@ -132,12 +133,12 @@ export default class AudioPlayer extends PureComponent {
           loaded={loaded}
           duration={audio.duration}
           currentTime={currentTime}
-          onRewindTime={this.handleRewindTime}
+          onRewindTime={this.rewindTime}
         />
         <Controls
           isPlaying={audio.isPlaying}
           onTogglePlay={this.props.togglePlaying}
-          onMoveAudio={this.handleMoveAudio}
+          onMoveAudio={this.moveAudio}
         />
         <img
           src={audioImg}
@@ -150,14 +151,16 @@ export default class AudioPlayer extends PureComponent {
           <div>{audio.title}</div>
         </div>
         <QueueManage
+          user={user}
+          audio={audio}
           loop={loop}
           random={random}
-          onLoopAudio={this.handleLoopAudio}
-          onRandomAudio={this.handleRandomAudio}
+          onLoopAudio={this.loopAudio}
+          onRandomAudio={this.randomAudio}
         />
         <Volume
           volume={volume}
-          onPickVolume={this.handleVolume}
+          onPickVolume={this.pickVolume}
         />
       </div>
     );
