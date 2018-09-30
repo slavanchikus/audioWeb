@@ -17,20 +17,22 @@ export default class AudioContainer extends Component {
     item: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
     active: PropTypes.object.isRequired,
-    onPickAudio: PropTypes.func.isRequired,
+    manageAudio: PropTypes.func.isRequired,
+    pickAudio: PropTypes.func.isRequired,
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     return (nextProps.active.id === this.props.item.id)
       || (this.props.active.id !== nextProps.active.id && this.props.active.id === this.props.item.id)
-      || (this.state !== nextState);
+      || (this.props.item.isDeleted !== nextProps.item.isDeleted)
+      || (this.props.item.isAdded !== nextProps.item.isAdded);
   }
 
   clickContainer = () => {
-    const { item, onPickAudio } = this.props;
+    const { item } = this.props;
 
     if (item.is_licensed) {
-      onPickAudio(item);
+      this.props.pickAudio(item);
     }
   };
 
@@ -56,7 +58,7 @@ export default class AudioContainer extends Component {
     const className = cx(styles.container, {
       [styles.authorized]: user.id,
       [styles.playing]: active.id === item.id,
-      [styles.disabled]: !item.is_licensed,
+      [styles.disabled]: !item.is_licensed || item.isDeleted,
     });
 
     const audioImg = item.img || 'images/audio_icon.png';
@@ -98,6 +100,7 @@ export default class AudioContainer extends Component {
             <AudioManage
               audio={item}
               user={user}
+              manageAudio={this.props.manageAudio}
             />}
           </div>
         </div>

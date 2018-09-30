@@ -12,11 +12,11 @@ export default class Progress extends Component {
     loaded: PropTypes.bool.isRequired,
     duration: PropTypes.number.isRequired,
     currentTime: PropTypes.number.isRequired,
-    onRewindTime: PropTypes.func.isRequired
+    rewindTime: PropTypes.func.isRequired
   };
 
   clickTimeline = (e) => {
-    this.props.onRewindTime(
+    this.props.rewindTime(
       ((e.clientX - this.timeline.getBoundingClientRect().left) / this.timeline.getBoundingClientRect().width) * this.props.duration
     );
   };

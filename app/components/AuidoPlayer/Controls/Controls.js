@@ -8,25 +8,25 @@ import styles from './Controls.module.styl';
 export default class Controls extends Component {
   static propTypes = {
     isPlaying: PropTypes.bool.isRequired,
-    onTogglePlay: PropTypes.func.isRequired,
-    onMoveAudio: PropTypes.func.isRequired
+    togglePlay: PropTypes.func.isRequired,
+    moveAudio: PropTypes.func.isRequired
   };
 
   clickPrev = () => {
-    this.props.onMoveAudio('prev');
+    this.props.moveAudio('prev');
   };
 
   clickNext = () => {
-    this.props.onMoveAudio('next');
+    this.props.moveAudio('next');
   };
 
   render() {
-    const { isPlaying, onTogglePlay } = this.props;
+    const { isPlaying } = this.props;
 
     return (
       <div className={styles.container}>
         <div onClick={this.clickPrev}>{prevIcon()}</div>
-        <div onClick={onTogglePlay}>
+        <div onClick={this.props.togglePlay}>
           {!isPlaying ? playIcon() : pauseIcon()}
         </div>
         <div onClick={this.clickNext}>{nextIcon()}</div>

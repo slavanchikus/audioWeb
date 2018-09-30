@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { manageAudio } from '../../../api/api';
-
 import { downloadIcon, successIcon } from '../../../uikit/svgIcons';
 
 import styles from './AudioManage.module.styl';
@@ -11,12 +9,7 @@ export default class AudioManage extends Component {
   static propTypes = {
     audio: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
-  };
-
-  state = {
-    isAdded: false,
-    isDeleted: false,
-    isManageFetching: false
+    manageAudio: PropTypes.func.isRequired
   };
 
   clickDownload = (e) => {
@@ -26,29 +19,11 @@ export default class AudioManage extends Component {
   manageAudio = (e) => {
     e.stopPropagation();
 
-    this.setState({ isManageFetching: true });
-
-    const { isDeleted, isManageFetching } = this.state;
     const { audio, user } = this.props;
-
-    if (!isManageFetching) {
-      manageAudio(audio.id, audio.owner_id, isDeleted, user.id, user.token)
-        .then((resposne) => {
-          const { ownerId, userId } = resposne;
-          if (isDeleted) {
-            this.setState({ isDeleted: false });
-          } else if (ownerId === userId) {
-            this.setState({ isDeleted: true });
-          } else {
-            this.setState({ isAdded: true });
-          }
-          this.setState({ isManageFetching: false });
-        });
-    }
+    this.props.manageAudio(audio.id, audio.owner_id, audio.isDeleted, user.id, user.token);
   };
 
   render() {
-    const { isAdded, isDeleted } = this.state;
     const { audio, user } = this.props;
 
     return (
@@ -56,11 +31,11 @@ export default class AudioManage extends Component {
         <span onClick={this.manageAudio}>
           {user.id !== audio.owner_id ?
             <span>
-              {isAdded ? successIcon() : '+'}
+              {audio.isAdded ? successIcon() : '+'}
             </span>
             :
             <span>
-              {isDeleted ? '+' : '×'}
+              {audio.isDeleted ? '+' : '×'}
             </span>}
         </span>
         {audio.is_licensed &&

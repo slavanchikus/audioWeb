@@ -22,6 +22,18 @@ export default function audioReducer(state = initialState, action) {
         isPlaying: !state.isPlaying
       };
     }
+    case 'MANAGE_AUDIO_COMPLETE': {
+      const { audioId, isDeleted = false, isAdded = false } = action.payload;
+
+      if (audioId === state.id) {
+        return {
+          ...state,
+          isDeleted,
+          isAdded
+        };
+      }
+      return state;
+    }
     default:
       break;
   }

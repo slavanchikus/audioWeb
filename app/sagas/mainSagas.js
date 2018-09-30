@@ -1,5 +1,5 @@
 import { fork, call, put, takeEvery } from 'redux-saga/effects';
-import { getAudio, listenAudio, getUser } from '../api/api';
+import { getAudio, manageAudio, listenAudio, getUser } from '../api/api';
 
 function* fetchAudio({ value, page, userId, token }) {
   try {
@@ -13,6 +13,28 @@ function* fetchAudio({ value, page, userId, token }) {
 
 function* watchAudioRequest() {
   yield takeEvery('GET_AUDIO', fetchAudio);
+}
+
+
+function* fetchManageAudio({ id, ownerId, isDeleted, userId, token }) {
+  try {
+    const payload = yield call(manageAudio, id, ownerId, isDeleted, userId, token);
+    if (isDeleted) {
+      payload.isDeleted = false;
+    } else if (ownerId === userId) {
+      payload.isDeleted = true;
+    } else {
+      payload.isAdded = true;
+    }
+    yield put({ type: 'MANAGE_AUDIO_COMPLETE', payload });
+  } catch (error) {
+    yield put({ type: 'MANAGE_AUDIO_FAILED' });
+    throw error;
+  }
+}
+
+function* watchAudioManageRequest() {
+  yield takeEvery('MANAGE_AUDIO', fetchManageAudio);
 }
 
 
@@ -59,6 +81,7 @@ function* watchUserRequest() {
 
 export function* audioSagas() {
   yield fork(watchAudioRequest);
+  yield fork(watchAudioManageRequest);
   yield fork(watchListenRequest);
 
   yield fork(watchUserRequest);

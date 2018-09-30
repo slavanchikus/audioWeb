@@ -15,16 +15,17 @@ export default class QueueManage extends Component {
     audio: PropTypes.object.isRequired,
     loop: PropTypes.bool.isRequired,
     random: PropTypes.bool.isRequired,
-    onLoopAudio: PropTypes.func.isRequired,
-    onRandomAudio: PropTypes.func.isRequired
+    loopAudio: PropTypes.func.isRequired,
+    randomAudio: PropTypes.func.isRequired,
+    manageAudio: PropTypes.func.isRequired
   };
 
   clickRepeat = () => {
-    this.props.onLoopAudio();
+    this.props.loopAudio();
   };
 
   clickRandom = () => {
-    this.props.onRandomAudio();
+    this.props.randomAudio();
   };
 
   render() {
@@ -46,6 +47,7 @@ export default class QueueManage extends Component {
           <AudioManage
             audio={audio}
             user={user}
+            manageAudio={this.props.manageAudio}
           />
         </div>
       </div>

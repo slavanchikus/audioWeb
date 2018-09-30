@@ -15,6 +15,7 @@ export default class AudioPlayer extends PureComponent {
     queue: PropTypes.array.isRequired,
     isFetchingAudio: PropTypes.bool.isRequired,
     togglePlaying: PropTypes.func.isRequired,
+    manageAudio: PropTypes.func.isRequired,
     pickAudio: PropTypes.func.isRequired
   };
 
@@ -133,12 +134,12 @@ export default class AudioPlayer extends PureComponent {
           loaded={loaded}
           duration={audio.duration}
           currentTime={currentTime}
-          onRewindTime={this.rewindTime}
+          rewindTime={this.rewindTime}
         />
         <Controls
           isPlaying={audio.isPlaying}
-          onTogglePlay={this.props.togglePlaying}
-          onMoveAudio={this.moveAudio}
+          togglePlay={this.props.togglePlaying}
+          moveAudio={this.moveAudio}
         />
         <img
           src={audioImg}
@@ -155,12 +156,13 @@ export default class AudioPlayer extends PureComponent {
           audio={audio}
           loop={loop}
           random={random}
-          onLoopAudio={this.loopAudio}
-          onRandomAudio={this.randomAudio}
+          loopAudio={this.loopAudio}
+          randomAudio={this.randomAudio}
+          manageAudio={this.props.manageAudio}
         />
         <Volume
           volume={volume}
-          onPickVolume={this.pickVolume}
+          pickVolume={this.pickVolume}
         />
       </div>
     );

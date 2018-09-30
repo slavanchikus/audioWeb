@@ -13,10 +13,15 @@ export const pickAudio = (audio, queue, getStreamUrl) => ({
   getStreamUrl
 });
 
-export const getUser = token => ({
-  type: 'GET_USER',
-  token,
+export const manageAudio = (id, ownerId, isDeleted, userId, token) => ({
+  type: 'MANAGE_AUDIO',
+  id,
+  ownerId,
+  isDeleted,
+  userId,
+  token
 });
+
 
 export const togglePlaying = () => ({
   type: 'TOGGLE_PLAYING',
@@ -24,4 +29,10 @@ export const togglePlaying = () => ({
 
 export const setPage = () => ({
   type: 'SET_PAGE',
+});
+
+
+export const getUser = token => ({
+  type: 'GET_USER',
+  token,
 });

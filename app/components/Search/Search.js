@@ -21,12 +21,12 @@ export default class Search extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.isTyping && !this.state.isTyping) {
-      const { user, listValue, getAudio } = this.props;
+      const { user, listValue } = this.props;
       if (listValue.trim() !== this.state.value.trim()) {
         if (this.state.value.length === 0) {
-          getAudio('', 1, user.id, user.token);
+          this.props.getAudio('', 1, user.id, user.token);
         } else {
-          getAudio(this.state.value, 1, user.id, user.token);
+          this.props.getAudio(this.state.value, 1, user.id, user.token);
         }
       }
     }

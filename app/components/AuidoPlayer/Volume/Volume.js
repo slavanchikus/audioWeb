@@ -8,7 +8,7 @@ import styles from './Volume.module.styl';
 export default class Volume extends Component {
   static propTypes = {
     volume: PropTypes.number,
-    onPickVolume: PropTypes.func.isRequired
+    pickVolume: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -26,7 +26,7 @@ export default class Volume extends Component {
   clickVolume = (e) => {
     let val = Math.abs((e.clientY - this.vol.getBoundingClientRect().bottom) / this.vol.getBoundingClientRect().height);
     if (val > 1) val = 1;
-    this.props.onPickVolume(val);
+    this.props.pickVolume(val);
   };
 
   handleMouseEnter = () => {

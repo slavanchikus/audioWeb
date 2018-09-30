@@ -22,6 +22,7 @@ export default function audiosReducer(state = initialState, action) {
           page: 1
         };
       }
+
       return {
         ...state,
         value,
@@ -29,6 +30,7 @@ export default function audiosReducer(state = initialState, action) {
     }
     case 'GET_AUDIO_COMPLETE': {
       const { items, hasNextPage } = action.payload;
+
       return {
         ...state,
         items: [
@@ -37,6 +39,25 @@ export default function audiosReducer(state = initialState, action) {
         ],
         hasNextPage
       };
+    }
+    case 'MANAGE_AUDIO_COMPLETE': {
+      const { audioId, isDeleted = false, isAdded = false } = action.payload;
+
+      const modefiedItems = [...state.items];
+      const index = modefiedItems.findIndex(i => i.id === audioId);
+      if (index !== -1) {
+        modefiedItems[index] = {
+          ...modefiedItems[index],
+          isDeleted,
+          isAdded
+        };
+
+        return {
+          ...state,
+          items: modefiedItems
+        };
+      }
+      return state;
     }
     default:
       break;

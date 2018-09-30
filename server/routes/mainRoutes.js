@@ -78,7 +78,7 @@ module.exports = function(app) {
     };
     request(params, (err, res, body) => {
       if (body) {
-        mainRes.send({ ownerId, userId });
+        mainRes.send({ audioId });
       }
     });
   });

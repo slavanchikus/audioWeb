@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { audioSelector, queueSelector, listSelector, userSelector, uiStateSelector } from '../selector/mainSelector';
-import { getAudio, pickAudio, togglePlaying, setPage, getUser } from '../actions/actions';
+import { getAudio, pickAudio, manageAudio, togglePlaying, setPage, getUser } from '../actions/actions';
 
 import AudioList from './AudioList/List';
 import AudioPlayer from './AuidoPlayer/Player';
@@ -21,7 +21,14 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ getAudio, pickAudio, togglePlaying, setPage, getUser }, dispatch);
+  bindActionCreators({
+    getAudio,
+    pickAudio,
+    manageAudio,
+    togglePlaying,
+    setPage,
+    getUser
+  }, dispatch);
 
 class MainContainer extends Component {
   componentDidMount() {
@@ -70,6 +77,7 @@ class MainContainer extends Component {
           list={list}
           uiState={uiState}
           setPage={this.props.setPage}
+          manageAudio={this.props.manageAudio}
           pickAudio={this.pickAudio}
         />
         {audio.id && queue.length > 0 &&
@@ -79,6 +87,7 @@ class MainContainer extends Component {
           queue={queue}
           isFetchingAudio={uiState.isFetchingAudio}
           togglePlaying={this.props.togglePlaying}
+          manageAudio={this.props.manageAudio}
           pickAudio={this.props.pickAudio}
         />}
       </div>
