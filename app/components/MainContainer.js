@@ -43,7 +43,7 @@ class MainContainer extends Component {
   }
 
   componentWillReceiveProps({ list, uiState }) {
-    if (!uiState.isFetching && list.page !== this.props.list.page) {
+    if (!uiState.isFetchingList && list.page !== this.props.list.page) {
       this.props.getAudio(list.value, list.page, this.props.user.id, this.props.user.token);
     }
   }

@@ -43,13 +43,14 @@ export default class QueueManage extends Component {
           <div onClick={this.clickRandom} className={randomClassName}>{randomIcon()}</div>
           <div onClick={this.clickRepeat} className={repeatClassName}>{repeatIcon()}</div>
         </div>
+        {user.id &&
         <div className={styles.tools}>
           <AudioManage
             audio={audio}
             user={user}
             manageAudio={this.props.manageAudio}
           />
-        </div>
+        </div>}
       </div>
     );
   }

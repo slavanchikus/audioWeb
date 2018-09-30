@@ -1,5 +1,7 @@
 import path from 'path';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import WebpackPwaManifest from 'webpack-pwa-manifest';
+import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin';
 
 export default () => ({
   entry: {
@@ -54,6 +56,30 @@ export default () => ({
   },
   plugins: [
     new ExtractTextPlugin({ filename: 'bundle.css' }),
+    new WebpackPwaManifest({
+      name: 'Black Chat',
+      short_name: 'Black Chat',
+      display: 'standalone',
+      description: 'Online music',
+      background_color: '#0f0f0f',
+      theme_color: '#0f0f0f',
+      fingerprints: false,
+      crossorigin: 'use-credentials',
+      start_url: '/',
+      icons: [
+        {
+          src: path.resolve(__dirname, 'build/images/logo.png'),
+          sizes: [96, 128, 192, 256, 384, 512]
+        },
+      ]
+    }),
+    new SWPrecacheWebpackPlugin({
+      dontCacheBustUrlsMatching: /\.\w{8}\./,
+      filename: 'service-worker.js',
+      minify: true,
+      navigateFallback: 'build/index.htm',
+      staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+    })
   ],
   devServer: {
     https: true,

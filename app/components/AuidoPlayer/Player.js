@@ -29,13 +29,27 @@ export default class AudioPlayer extends PureComponent {
   };
 
   componentDidMount() {
+    const { audio } = this.props;
+
     this.audio.play();
-    document.title = this.props.audio.title;
+    document.title = audio.title;
 
     this.audio.addEventListener('timeupdate', this.handleTimeUpdate, false);
     this.audio.addEventListener('loadstart', this.handleAudioLoading, false);
     this.audio.addEventListener('loadeddata', this.handleAudioLoaded, false);
     this.audio.addEventListener('ended', this.handleAudioEnded, false);
+
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: audio.title,
+        artist: audio.artist
+      });
+
+      navigator.mediaSession.setActionHandler('play', this.props.togglePlaying);
+      navigator.mediaSession.setActionHandler('pause', this.props.togglePlaying);
+      navigator.mediaSession.setActionHandler('previoustrack', () => this.moveAudio('prev'));
+      navigator.mediaSession.setActionHandler('nexttrack', () => this.moveAudio('next'));
+    }
   }
 
   componentWillReceiveProps({ audio, queue, isFetchingAudio }) {
@@ -60,8 +74,15 @@ export default class AudioPlayer extends PureComponent {
       }
     }
 
-    if (audio !== this.props.audio) {
+    if (audio.id !== this.props.audio.id) {
       document.title = audio.title;
+
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: audio.title,
+          artist: audio.artist
+        });
+      }
     }
   }
 

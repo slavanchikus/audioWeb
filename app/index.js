@@ -16,6 +16,12 @@ export class App extends Component {
   }
 }
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('assets/service-worker.js')
+    .then(() => console.log('service worker installed'))
+    .catch(err => console.error('Error', err));
+}
+
 render(
   <App />,
   document.getElementById('root')
