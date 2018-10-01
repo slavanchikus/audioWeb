@@ -19,7 +19,7 @@ export const getUser = token => fetch(`${host}/getuser`, {
     throw error;
   });
 
-export const getAudio = (value, page, userId, token) => fetch(`${host}/getaudio`, {
+export const getAudios = (value, page, userId, token) => fetch(`${host}/getaudio`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'

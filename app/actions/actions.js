@@ -1,5 +1,5 @@
-export const getAudio = (value, page, userId, token) => ({
-  type: 'GET_AUDIO',
+export const getAudios = (value, page, userId, token) => ({
+  type: 'GET_AUDIOS',
   value,
   page,
   userId,

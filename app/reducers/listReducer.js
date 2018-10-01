@@ -12,7 +12,7 @@ export default function audiosReducer(state = initialState, action) {
         page: state.page + 1,
       };
     }
-    case 'GET_AUDIO': {
+    case 'GET_AUDIOS': {
       const { value } = action;
       if (state.value !== value) {
         return {
@@ -28,7 +28,7 @@ export default function audiosReducer(state = initialState, action) {
         value,
       };
     }
-    case 'GET_AUDIO_COMPLETE': {
+    case 'GET_AUDIOS_COMPLETE': {
       const { items, hasNextPage } = action.payload;
 
       return {

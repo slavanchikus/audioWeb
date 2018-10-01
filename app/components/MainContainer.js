@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { audioSelector, queueSelector, listSelector, userSelector, uiStateSelector } from '../selector/mainSelector';
-import { getAudio, pickAudio, manageAudio, togglePlaying, setPage, getUser } from '../actions/actions';
+import { getAudios, pickAudio, manageAudio, togglePlaying, setPage, getUser } from '../actions/actions';
 
 import AudioList from './AudioList/List';
 import AudioPlayer from './AuidoPlayer/Player';
@@ -22,7 +22,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
-    getAudio,
+    getAudios,
     pickAudio,
     manageAudio,
     togglePlaying,
@@ -38,13 +38,13 @@ class MainContainer extends Component {
     if (user.token) {
       this.props.getUser(user.token);
     } else {
-      this.props.getAudio(value, page);
+      this.props.getAudios(value, page);
     }
   }
 
   componentWillReceiveProps({ list, uiState }) {
     if (!uiState.isFetchingList && list.page !== this.props.list.page) {
-      this.props.getAudio(list.value, list.page, this.props.user.id, this.props.user.token);
+      this.props.getAudios(list.value, list.page, this.props.user.id, this.props.user.token);
     }
   }
 
@@ -69,7 +69,7 @@ class MainContainer extends Component {
         <Search
           user={user}
           listValue={list.value}
-          getAudio={this.props.getAudio}
+          getAudios={this.props.getAudios}
         />
         <AudioList
           user={user}
@@ -85,7 +85,6 @@ class MainContainer extends Component {
           user={user}
           audio={audio}
           queue={queue}
-          isFetchingAudio={uiState.isFetchingAudio}
           togglePlaying={this.props.togglePlaying}
           manageAudio={this.props.manageAudio}
           pickAudio={this.props.pickAudio}

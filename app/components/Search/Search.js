@@ -11,7 +11,7 @@ export default class Search extends PureComponent {
   static propTypes = {
     user: PropTypes.object.isRequired,
     listValue: PropTypes.string.isRequired,
-    getAudio: PropTypes.func.isRequired,
+    getAudios: PropTypes.func.isRequired,
   };
 
   state = {
@@ -24,9 +24,9 @@ export default class Search extends PureComponent {
       const { user, listValue } = this.props;
       if (listValue.trim() !== this.state.value.trim()) {
         if (this.state.value.length === 0) {
-          this.props.getAudio('', 1, user.id, user.token);
+          this.props.getAudios('', 1, user.id, user.token);
         } else {
-          this.props.getAudio(this.state.value, 1, user.id, user.token);
+          this.props.getAudios(this.state.value, 1, user.id, user.token);
         }
       }
     }

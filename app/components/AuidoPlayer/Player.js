@@ -13,7 +13,6 @@ export default class AudioPlayer extends PureComponent {
     user: PropTypes.object.isRequired,
     audio: PropTypes.object.isRequired,
     queue: PropTypes.array.isRequired,
-    isFetchingAudio: PropTypes.bool.isRequired,
     togglePlaying: PropTypes.func.isRequired,
     manageAudio: PropTypes.func.isRequired,
     pickAudio: PropTypes.func.isRequired
@@ -52,16 +51,14 @@ export default class AudioPlayer extends PureComponent {
     }
   }
 
-  componentWillReceiveProps({ audio, queue, isFetchingAudio }) {
-    if (!isFetchingAudio && audio.isPlaying && !this.props.audio.isPlaying) {
+  componentWillReceiveProps({ audio, queue }) {
+    if (audio.isPlaying && !this.props.audio.isPlaying) {
       this.audio.play();
     } else if (!audio.isPlaying && this.props.audio.isPlaying) {
       this.audio.pause();
     }
 
-    if (this.props.audio && audio && this.state.loaded
-      && this.props.audio.id !== audio.id) {
-      this.audio.pause();
+    if (this.state.loaded && this.props.audio.id !== audio.id) {
       this.setState({ loaded: false });
     }
 
@@ -86,6 +83,12 @@ export default class AudioPlayer extends PureComponent {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevState.loaded && this.state.loaded) {
+      this.audio.play();
+    }
+  }
+
   handleAudioLoading = () => {
     this.setState({ loaded: false });
   };
@@ -95,7 +98,7 @@ export default class AudioPlayer extends PureComponent {
   };
 
   handleAudioEnded = () => {
-    this.handleMoveAudio('next');
+    this.moveAudio('next');
   };
 
   handleTimeUpdate = () => {
@@ -148,7 +151,6 @@ export default class AudioPlayer extends PureComponent {
         <audio
           ref={node => (this.audio = node)}
           src={audio.url}
-          autoPlay={audio.isPlaying}
           loop={loop}
         />
         <Progress

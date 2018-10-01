@@ -6,14 +6,14 @@ const initialState = {
 
 export default function uiStateReducer(state = initialState, action) {
   switch (action.type) {
-    case 'GET_AUDIO': {
+    case 'GET_AUDIOS': {
       return {
         ...state,
         isFetchingList: true
       };
     }
-    case 'GET_AUDIO_FAILED':
-    case 'GET_AUDIO_COMPLETE': {
+    case 'GET_AUDIOS_FAILED':
+    case 'GET_AUDIOS_COMPLETE': {
       return {
         ...state,
         isFetchingList: false
