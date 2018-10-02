@@ -28,10 +28,7 @@ export default class AudioPlayer extends PureComponent {
   };
 
   componentDidMount() {
-    const { audio } = this.props;
-
-    this.audio.play();
-    document.title = audio.title;
+    this.setAudioData();
 
     this.audio.addEventListener('timeupdate', this.handleTimeUpdate, false);
     this.audio.addEventListener('loadstart', this.handleAudioLoading, false);
@@ -39,11 +36,6 @@ export default class AudioPlayer extends PureComponent {
     this.audio.addEventListener('ended', this.handleAudioEnded, false);
 
     if ('mediaSession' in navigator) {
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: audio.title,
-        artist: audio.artist
-      });
-
       navigator.mediaSession.setActionHandler('play', this.props.togglePlaying);
       navigator.mediaSession.setActionHandler('pause', this.props.togglePlaying);
       navigator.mediaSession.setActionHandler('previoustrack', () => this.moveAudio('prev'));
@@ -70,22 +62,11 @@ export default class AudioPlayer extends PureComponent {
         this.setState({ playerQueue: queue });
       }
     }
-
-    if (audio.id !== this.props.audio.id) {
-      document.title = audio.title;
-
-      if ('mediaSession' in navigator) {
-        navigator.mediaSession.metadata = new MediaMetadata({
-          title: audio.title,
-          artist: audio.artist
-        });
-      }
-    }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevState.loaded && this.state.loaded) {
-      this.audio.play();
+  componentDidUpdate(prevProps) {
+    if (!prevProps.audio.id !== this.props.audio.id) {
+      this.setAudioData();
     }
   }
 
@@ -140,6 +121,19 @@ export default class AudioPlayer extends PureComponent {
     if (turnAudio) this.props.pickAudio(turnAudio, null);
   };
 
+  setAudioData = () => {
+    const { audio } = this.props;
+    document.title = audio.title;
+
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: audio.title,
+        artist: audio.artist,
+        artwork: [{ src: audio.img || 'images/audio_icon.png', sizes: '96x96', type: 'image/png' }]
+      });
+    }
+  };
+
   render() {
     const { currentTime, volume, loop, random, loaded } = this.state;
     const { user, audio } = this.props;
@@ -152,6 +146,7 @@ export default class AudioPlayer extends PureComponent {
           ref={node => (this.audio = node)}
           src={audio.url}
           loop={loop}
+          autoPlay={audio.isPlaying}
         />
         <Progress
           loaded={loaded}
