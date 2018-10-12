@@ -65,7 +65,7 @@ export default class AudioPlayer extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (!prevProps.audio.id !== this.props.audio.id) {
+    if (prevProps.audio.id !== this.props.audio.id) {
       this.setAudioData();
     }
   }
@@ -110,7 +110,7 @@ export default class AudioPlayer extends PureComponent {
 
   moveAudio = (direction) => {
     const { playerQueue } = this.state;
-    const { audio } = this.props;
+    const { user, audio } = this.props;
     const currAudio = playerQueue.findIndex(i => i.id === audio.id);
     let turnAudio;
     if (direction === 'prev') {
@@ -118,7 +118,9 @@ export default class AudioPlayer extends PureComponent {
     } else {
       turnAudio = playerQueue[currAudio + 1];
     }
-    if (turnAudio) this.props.pickAudio(turnAudio, null);
+    const getStreamUrl = !user.id;
+
+    if (turnAudio) this.props.pickAudio(turnAudio, null, getStreamUrl);
   };
 
   setAudioData = () => {
