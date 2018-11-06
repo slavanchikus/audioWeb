@@ -143,7 +143,7 @@ export default class AudioPlayer extends PureComponent {
     const audioImg = audio.img || 'images/audio_icon.png';
 
     return (
-      <div className={styles.container}>
+      <div id="audio_player" className={styles.container}>
         <audio
           ref={node => (this.audio = node)}
           src={audio.url}

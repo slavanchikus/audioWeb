@@ -43,6 +43,18 @@ export default class Search extends PureComponent {
     this.setState({ value: e.target.value });
   };
 
+  focusInput = () => {
+    if (window.innerWidth < 700) {
+      document.getElementById('audio_player').style.height = '64px';
+    }
+  };
+
+  blurInput = () => {
+    if (window.innerWidth < 700) {
+      document.getElementById('audio_player').style.height = '174px';
+    }
+  };
+
   render() {
     const { value, } = this.state;
     const { user } = this.props;
@@ -57,6 +69,8 @@ export default class Search extends PureComponent {
           value={value}
           placeholder="Введите название..."
           onChange={this.changeInput}
+          onFocus={this.focusInput}
+          onBlur={this.blurInput}
         />
         <VkContainer
           user={user}
