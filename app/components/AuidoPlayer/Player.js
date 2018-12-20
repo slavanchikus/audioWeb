@@ -34,6 +34,7 @@ export default class AudioPlayer extends PureComponent {
     this.audio.addEventListener('loadstart', this.handleAudioLoading, false);
     this.audio.addEventListener('loadeddata', this.handleAudioLoaded, false);
     this.audio.addEventListener('ended', this.handleAudioEnded, false);
+    this.audio.addEventListener('error', this.handleAudioError, false);
 
     if ('mediaSession' in navigator) {
       navigator.mediaSession.setActionHandler('play', this.props.togglePlaying);
@@ -70,6 +71,19 @@ export default class AudioPlayer extends PureComponent {
     }
   }
 
+  setAudioData = () => {
+    const { audio } = this.props;
+    document.title = audio.title;
+
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: audio.title,
+        artist: audio.artist,
+        artwork: [{ src: audio.img || 'images/audio_icon.png', sizes: '96x96', type: 'image/png' }]
+      });
+    }
+  };
+
   handleAudioLoading = () => {
     this.setState({ loaded: false });
   };
@@ -81,6 +95,12 @@ export default class AudioPlayer extends PureComponent {
   handleAudioEnded = () => {
     this.moveAudio('next');
   };
+
+  handleAudioError = () => new Promise(() => {
+    this.audio.load();
+  })
+    .then(() => this.audio.play())
+    .catch(() => this.moveAudio('next'));
 
   handleTimeUpdate = () => {
     this.setState({ currentTime: this.audio.currentTime });
@@ -121,19 +141,6 @@ export default class AudioPlayer extends PureComponent {
     const getStreamUrl = !user.id;
 
     if (turnAudio) this.props.pickAudio(turnAudio, null, getStreamUrl);
-  };
-
-  setAudioData = () => {
-    const { audio } = this.props;
-    document.title = audio.title;
-
-    if ('mediaSession' in navigator) {
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: audio.title,
-        artist: audio.artist,
-        artwork: [{ src: audio.img || 'images/audio_icon.png', sizes: '96x96', type: 'image/png' }]
-      });
-    }
   };
 
   render() {
